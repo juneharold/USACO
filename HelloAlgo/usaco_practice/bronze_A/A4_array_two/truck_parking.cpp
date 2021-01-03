@@ -1,7 +1,55 @@
+// 트럭 주차 
 #include <iostream>
 #include <algorithm>
 #include <string>
 using namespace std;
+
+
+int main()
+{
+    int A, B, C;
+    cin >> A >> B >> C;
+    int p1, q1;
+    int p2, q2;
+    int p3, q3; // p is enter, q is leave
+    cin >> p1 >> q1 >> p2 >> q2 >> p3 >> q3;
+    // make array as timeline
+    int timeline[100]={};
+    // for truck 1
+    for (int i=p1; i<q1; i++)
+    {
+        timeline[i] += 1;
+    }
+    // for truck 2
+    for (int j=p2; j<q2; j++)
+    {
+        timeline[j] += 1;
+    }
+    // for truck 3
+    for (int k=p3; k<q3; k++)
+    {
+        timeline[k] += 1;
+    }
+    // going thru timeline
+    int sum=0;
+    for (int t=0; t<100; t++)
+    {
+        if (timeline[t]==1)
+        {
+            sum += 1*A;
+        }
+        else if (timeline[t]==2)
+        {
+            sum += 2*B;
+        }
+        else if (timeline[t]==3)
+        {
+            sum += 3*C;
+        }
+    }
+    cout << sum << endl;
+}
+
 
 /* First method
 int main()
@@ -90,16 +138,3 @@ int main()
     cout << price << endl;
 }
 */
-
-int main()
-{
-    int A, B, C;
-    cin >> A >> B >> C;
-    int p1, q1;
-    int p2, q2;
-    int p3, q3; // p is enter, q is leave
-    cin >> p1 >> q1 >> p2 >> q2 >> p3 >> q3;
-    // make all three cases 
-    
-}
-
