@@ -4,6 +4,7 @@
 #include <string>
 using namespace std;
 
+/*
 int main()
 {
     int N;
@@ -46,4 +47,36 @@ int main()
     int larger_area = (max_x-min_x) * (max_y-min_y);
     int Area = larger_area - sub_area;
     cout << Area;
+}
+*/
+
+int main()
+{
+    int N, plane[101][101]={};
+    cin >> N;
+    for (int i=0; i<N; i++)
+    {
+        int x, y;
+        cin >> x >> y;
+        for (int i=y; i<y+10; i++)
+        {
+            for (int j=x; j<x+10; j++)
+            {
+                plane[j][i] = 1;
+            }
+        }
+    }
+    // counting
+    int counter=0;
+    for (int i=0; i<101; i++)
+    {
+        for (int j=0; j<101; j++)
+        {
+            if (plane[j][i] == 1)
+            {
+                counter+=1;
+            }
+        }
+    }
+    cout << counter << endl;
 }
