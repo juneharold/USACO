@@ -12,5 +12,6 @@ int main()
     {
         string A, B, C;
         cin >> A >> B >> C;
+        
     }
 }
