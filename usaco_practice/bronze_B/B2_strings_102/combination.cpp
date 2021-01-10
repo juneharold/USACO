@@ -19,19 +19,11 @@ int main()
         {
             for (int c=1; c<=N; c++)
             {
-                if (abs(M1-a)<=2 and abs(M2-b)<=2 and abs(M3-c)<=2)
+                if ((abs(M1-a)<=2 or abs(M1-a)>=N-2) and (abs(M2-b)<=2 or abs(M2-b)>=N-2) and (abs(M3-c)<=2 or abs(M3-c)>=N-2))
                 {
                     counter += 1;
                 }
-                else if (abs(J1-a)<=2 and abs(J2-b)<=2 and abs(J3-c)<=2)
-                {
-                    counter += 1;
-                }
-                else if (abs(J1-a)>=N-2 and abs(J2-b)>=N-2 and abs(J3-c)>=N-2)
-                {
-                    counter += 1;
-                }
-                else if (abs(M1-a)>=N-2 and abs(M2-b)>=N-2 and abs(M3-c)>=N-2)
+                else if ((abs(J1-a)<=2 or abs(J1-a)>=N-2) and (abs(J2-b)<=2 or abs(J2-b)>=N-2) and (abs(J3-c)<=2 or abs(J3-c)>=N-2))
                 {
                     counter += 1;
                 }
