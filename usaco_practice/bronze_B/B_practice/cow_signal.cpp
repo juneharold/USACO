@@ -7,6 +7,7 @@ using namespace std;
 int main()
 {
     int M, N, K;
+    cin >> M >> N >> K;
     string signal[10] = {};
     for (int i=0; i<M; i++)
     {
@@ -23,12 +24,9 @@ int main()
                 for (int j=0; j<K; j++)
                 {
                     cout << signal[a][b];
-                    if (j==K-1)
-                    {
-                        cout << endl;
-                    }
                 }
             }
+            cout << endl;
         }
     }
 }
