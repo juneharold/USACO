@@ -1,68 +1,53 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <tuple>
+#include <cstdio>
 using namespace std;
 
 int main()
 {
+    freopen("measurement.in", "r", stdin);
+    freopen("measurement.out", "w", stdout);
     int N;
     cin >> N;
-    pair <pair<int, string>, int> record[100]={};
+    pair <int, pair<string, int> > record[100]={};
     for (int i=0; i<N; i++)
     {
-        cin >> record[i].first.first >> record[i].first.second >> record[i].second;
+        cin >> record[i].first >> record[i].second.first >> record[i].second.second;
     }
-    // first-first is day, first-second is the name, second is difference
-    sort(record, record+100);
-    // find unique names
-    string uniqname[100]={};
-    for (int i=0; i<N; i++)
-    {
-        int indicator=0;
-        string curname=record[i].first.second;
-        for (int j=0; j<N; j++)
-        {
-            if (curname==record[j].first.second)
-            {
-                indicator=1;
-            }
-        }
-        if (indicator==0)
-        {
-            uniqname[i]=curname;
-        }
-    }
+    // first is day, second-first is the name, second-second is difference
+    sort(record, record+N);
     // now that the day is sorted, it won't matter
     pair<string, int> recs[100]={}; //this is current status
     for (int i=0; i<N; i++)
     {
-        recs[i].first=uniqname[i];
+        recs[i].first=record[i].second.first;
         recs[i].second=7;
     }
     // main method
     int display_count = 0;
-    pair <string, int> curr("", 0);
+    pair <string, int> currdis("", 0); //display cow name, num cows
     for (int j=0; j<N; j++)
     {
-        string name=record[j].first.second;
+        string name=record[j].second.first;
         for (int k=0; k<N; k++)
         {
             if (recs[k].first==name)
             {
-                recs[k].second += record[j].second; //this is the increment
-                if (recs[k].second<0)
-                {
-                    recs[k].second=0;
-                }
+                recs[k].second += record[j].second.second; //this is the increment only add to first occurence of name
+                break;
             }
         }
+        if (record[j].second.second==0)
+        {
+            continue;
+        }
         // display changes if cows that have max number changes OR the max person changes..
-        int max_num=0; // max value
+        int max_num=0; // max milk out
         //first find max num, then see how many cows have max num
         for (int p=0; p<N; p++)
         {
-            if (recs[p].second>max_num)
+            if (recs[p].second>=max_num)
             {
                 max_num = recs[p].second;
             }
@@ -77,16 +62,16 @@ int main()
                 name_last=recs[p].first;
             }
         }
-        if (cow_count!=curr.second)
+        if (cow_count!=currdis.second)
         {
-            curr.second = cow_count;
-            curr.first = name_last;
+            currdis.first = name_last;
+            currdis.second = cow_count;
             display_count += 1;
         }
-        else if (name_last != curr.first)
+        else if (name_last != currdis.first)
         {
-            curr.first = name_last;
-            curr.second = cow_count;
+            currdis.first = name_last;
+            currdis.second = cow_count;
             display_count += 1;
         }
     }
