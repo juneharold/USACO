@@ -6,8 +6,8 @@ using namespace std;
 
 int main()
 {
-    freopen("cowtip.in", "r", stdin);
-    freopen("cowtip.out", "w", stdout);
+    //freopen("cowtip.in", "r", stdin);
+    //freopen("cowtip.out", "w", stdout);
     int N;
     cin >> N;
     int arr[10][10]={}; //arr[rows][columns]
