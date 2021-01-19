@@ -48,7 +48,7 @@ int main()
         for (int j=0; j<D; j++)
         {
             int indicator=0;
-            // look for overlaps
+            //look for overlaps
             for (int k=0; k<50; k++)
             {
                 if (TPM[j].second.first==overlaps[k])
