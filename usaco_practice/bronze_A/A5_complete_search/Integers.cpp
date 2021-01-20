@@ -19,20 +19,19 @@ int main()
         {
             for (int k=0; k<N; k++)
             {
-                // the number: (A[i]-A[j])/A[k]
-                if (i!=j and j!=k and k!=i and indicator==0)
+                int num=(A[i]-A[j])/A[k];
+                double num2=(A[i]-A[j])/A[k] + (A[i]-A[j])%A[k];
+                if (i!=j and j!=k and k!=i)
                 {
-                    if (round((A[i]-A[j])/A[k])!=(A[i]-A[j])/A[k]) // this means that this is not int
+                    if (num!=num2) // this means that this is not int
                     {
                         cout << "no";
-                        indicator = 1;
+                        return 0;
                     }
                 }
             }
         }
     }
-    if (indicator==0)
-    {
-        cout << "yes";
-    }
+    cout << "yes";
+    return 0;
 }
