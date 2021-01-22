@@ -5,8 +5,8 @@ using namespace std;
 
 int main()
 {
-    freopen("art.in", "r", stdin);
-    freopen("art.out", "w", stdout);
+    //freopen("art.in", "r", stdin);
+    //freopen("art.out", "w", stdout);
     int N;
     cin >> N;
     int canvas[10][10]={}; //rows and columns

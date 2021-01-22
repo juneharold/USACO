@@ -53,7 +53,7 @@ int main()
             }
         }
         int cow_count=0; //number of cows that have the max value
-        string name_last;
+        string name_last="";
         for (int p=0; p<N; p++)
         {
             if (recs[p].second==max_num)
