@@ -20,7 +20,24 @@ int main()
         cin >> a;
         if (a=='H') A[0][i]++;
         if (a=='P') A[1][i]++;
+        if (a=='S') A[2][i]++;
     }
+    for (int i=0; i<3; i++)
+    {
+        for (int j=1; j<=N; j++)
+        {
+            A[i][j]+=A[i][j-1];
+        }
+    }
+    int ans=0;
+    for (int i=1; i<=N; i++)
+    {
+        for (int j=0; j<3; j++) for (int k=0; k<3; k++)
+        {
+            ans = max(ans, A[j][i]+(A[k][N]-A[k][j]));
+        }
+    }
+    cout << ans-1;
 }
 
 
