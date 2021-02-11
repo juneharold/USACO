@@ -1,7 +1,9 @@
 #include <iostream>
 using namespace std;
 
-long long rem[1000005]={};
+long long pfs[10000005]={};
+long long ans=0;
+long long combination[1001]={};
 
 int main()
 {
@@ -14,12 +16,18 @@ int main()
     {
         int a; 
         cin >> a;
-        sum += a;
-        rem[i]=sum%M;
+        pfs[i]=(pfs[i-1]+a)%M;
+        if (pfs[i]==0)
+        {
+            ans += 1;
+        }
+        combination[pfs[i]]+=1;
     }
-    long long counter=0;
-    long long ans=0;
-    cout << ans;
+    for (int i=0; i<1001; i++)
+    {
+        ans += (combination[i]*(combination[i]-1))/2;
+    }
+    cout << ans << "\n";
 }
 
 /*
