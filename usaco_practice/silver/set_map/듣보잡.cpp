@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include <vector>
 #include <set>
 using namespace std;
@@ -26,6 +27,10 @@ int main()
         }
     }
     cout << counter << "\n";
-    for (int i=0; i<ans.size(); i++) cout << ans[i] << "\n";
+    sort(ans.begin(), ans.end());
+    for (int i=0; i<ans.size(); i++) 
+    {
+        cout << ans[i] << "\n";
+    }
     return 0;
 }
