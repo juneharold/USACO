@@ -12,6 +12,5 @@ int main()
         int a; cin >> a;
         s.insert(a);
     }
-    long long sum=0;
-    for (int i=0; i<s.size(); i++)
+    cout << s.size();
 }
