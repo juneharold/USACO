@@ -2,6 +2,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 int main()
@@ -21,9 +22,14 @@ int main()
         }
     }
     vector <string> ans;
-    for (auto it=log.end(); it!=log.begin(); it--)
+    for (auto it=log.begin(); it!=log.end(); it++)
     {
-        cout << *it << "\n";
+        ans.push_back(*it);
     }  
+    sort(&ans[0], &ans[ans.size()]);
+    for (int i=ans.size()-1; i>=0; i--)
+    {
+        cout << ans[i] << "\n";
+    }
     return 0;
 }
