@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 int main()
@@ -12,10 +13,10 @@ int main()
     for (int i=0; i<N; i++)
     {
         string a; cin >> a;
-        books[a]+=1;
-        if (books.count(a)>max) max=books.count(a);
+        if (books.count(a)==0) books[a]=1;
+        else books[a]++;
+        if (books[a]>max) max=books[a];
     }
-    cout << max;
     vector <string> ans;
     for (auto x : books)
     {
