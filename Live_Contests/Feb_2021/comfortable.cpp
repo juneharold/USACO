@@ -13,6 +13,5 @@ int main()
     for (int i=0; i<N; i++)
     {
         int x, y; cin >> x >> y;
-
     }
 }
