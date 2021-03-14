@@ -1,5 +1,5 @@
 // 알람 시계
-# include <cstdio>
+#include <cstdio>
 
 int main()
 {
