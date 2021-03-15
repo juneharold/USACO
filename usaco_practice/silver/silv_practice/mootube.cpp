@@ -6,7 +6,6 @@ using namespace std;
 vector < pair <int, int> > graph[10000];
 int visit[10000]={};
 
-
 void dfs(int cur, int K)
 {
     visit[cur]=1;

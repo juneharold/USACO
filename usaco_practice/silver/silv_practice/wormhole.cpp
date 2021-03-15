@@ -3,20 +3,17 @@
 #include <vector>
 using namespace std;
 
+vector < pair<int, int> > graph[100005];
+int visit[100005]={};
 int pos[100005]={};
-struct wormhole
-{
-    int a, b, w;
-};
-wormhole WH[100005]={};
 
-void dfs(int cur, int k)
+void dfs(int cur, int mid)
 {
-    visit[cur]=k;
+    visit[cur]=1;
     for (int j=0; j<graph[cur].size(); j++)
     {
-        int next=graph[cur][j];
-        if (visit[next]==0) dfs(next, k);
+        int next=graph[cur][j].first;
+        if (visit[next]==0 and graph[cur][j].second>=mid) dfs(next, mid);
     }
 }
 
@@ -28,8 +25,8 @@ int main()
     for (int i=1; i<=N; i++) 
     {
         cin >> pos[i];
-        if (pos[i]==i) need[i]=1;
     }
+    // seeing if all are in order
     int indic=1;
     for (int i=1; i<=N; i++) 
     {
@@ -40,31 +37,29 @@ int main()
         cout << -1;
         return 0;
     }
+    // taking in input
     for (int i=0; i<M; i++) 
     {
         int a, b, w; cin >> a >> b >> w;
-        WH[i]= {a, b, w};
+        graph[a].push_back(make_pair(b, w));
+        graph[b].push_back(make_pair(a, w));
     }
     int low=0, high=1e6;
-    while (low < high)
+    while (low<high)
     {
         int mid=(low+high)/2+1;
-        int have[100005]={};
-        for (int i=1; i<=N; i++) have[i]=need[i];
-        for (int i=0; i<M; i++) 
-        {
-            if (WH[i].w>=mid)
-            {
-                have[WH[i].a]=1;
-                have[WH[i].b]=1;
-            }
-        }
-        int indicator=0;
+        int indicator=1;
         for (int i=1; i<=N; i++)
-        {
-            if (have[i]==0) indicator=1;
+        {  
+            dfs(i, mid); 
+            if (visit[pos[i]]!=1) 
+            {
+                indicator=0;
+                break;
+            }
+            fill(&visit[0], &visit[100005], 0);
         }
-        if (indicator==0) low=mid;
+        if (indicator==1) low=mid;
         else high=mid-1;
     }
     cout << low;
