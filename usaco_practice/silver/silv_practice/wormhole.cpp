@@ -19,8 +19,8 @@ void dfs(int cur, int mid)
 
 int main()
 {
-    freopen("wormsort.in", "r", stdin);
-    freopen("wormsort.out", "w", stdout);
+    //freopen("wormsort.in", "r", stdin);
+    //freopen("wormsort.out", "w", stdout);
     int N, M; cin >> N >> M;
     for (int i=1; i<=N; i++) 
     {
@@ -44,7 +44,7 @@ int main()
         graph[a].push_back(make_pair(b, w));
         graph[b].push_back(make_pair(a, w));
     }
-    int low=0, high=1e6;
+    int low=0, high=1000000;
     while (low<high)
     {
         int mid=(low+high)/2+1;
@@ -55,13 +55,21 @@ int main()
             if (visit[pos[i]]!=1) 
             {
                 indicator=0;
-                break;
             }
-            fill(&visit[0], &visit[100005], 0);
         }
+        fill(&visit[0], &visit[100005], 0);
         if (indicator==1) low=mid;
         else high=mid-1;
     }
     cout << low;
 }
+
+/*
+4 3 
+4 2 1 3
+1 2 1
+3 4 2 
+1 3 100
+*/
+
 
