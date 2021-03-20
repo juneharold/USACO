@@ -51,14 +51,14 @@ int main()
         int indicator=1;
         for (int i=1; i<=N; i++)
         {  
-            dfs(i, mid); 
+            dfs(pos[i], mid); 
             if (visit[pos[i]]!=1) 
             {
                 indicator=0;
             }
         }
         fill(&visit[0], &visit[100005], 0);
-        if (indicator==1) low=mid;
+        if (indicator==0) low=mid;
         else high=mid-1;
     }
     cout << low;
