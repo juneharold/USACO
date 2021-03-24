@@ -43,22 +43,22 @@ int main()
           else break;
         }
         // check right, left from up down
-        if ((up<=2*right or right>=up*2) and up>=2 and right>=2)
+        if ((up>=4 and right>=2) or (up>=2 and right>=4))
         {
           counter++;
           cout << i << j << "\n";
         }
-        if ((up<=2*left or left>=up*2) and up>=2 and left>=2)
+        if ((up>=4 and left>=2) or (up>=2 and left>=4))
         {
           counter++;
           cout << i << j << "\n";
         }
-        if ((down<=2*right or right>=down*2) and down>=2 and right>=2)
+        if ((down>=4 and right>=2) or (down>=2 and right>=4))
         {
           counter++;
           cout << i << j << "\n";
         }
-        if ((down<=2*left or left>=down*2) and down>=2 and left>=2)
+        if ((down>=4 and left>=2) or (down>=2 and left>=4))
         {
           counter++;
           cout << i << j << "\n";
