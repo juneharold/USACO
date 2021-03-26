@@ -20,11 +20,9 @@ int main()
       cin >> grid[i][j];
       coordinates.insert(make_pair(grid[i][j], make_pair(i, j)));
     }
-    int prev=-1;
-    int counter=0;
+    long long counter=0;
     for (int a=0; a<R*C; a++)
     {
-      prev=counter;
       // 가장 큰 칸 찾기
       auto it = coordinates.end();
       it--;

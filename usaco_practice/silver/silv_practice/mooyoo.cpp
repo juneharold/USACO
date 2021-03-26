@@ -29,7 +29,6 @@ int main()
     {
       dfs(y, x, color);
     }
-
   }
   /*
   for (int i=1; i<=N; i++)
