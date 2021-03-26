@@ -14,50 +14,45 @@ int main()
   {
     int R, C; cin >> R >> C;
     int grid[305][305]={};
-    for (int i=1; i<=R; i++) for (int j=1; j<=C; j++) cin >> grid[i][j];
+    multiset < pair< int, pair <int, int> > > coordinates;
+    for (int i=1; i<=R; i++) for (int j=1; j<=C; j++)
+    {
+      cin >> grid[i][j];
+      coordinates.insert(make_pair(grid[i][j], make_pair(i, j)));
+    }
     int prev=-1;
     int counter=0;
-    multiset pair< int, pair <int, int> > s;
-    int visit[305][305]={};
-    while (counter>prev)
+    for (int a=0; a<R*C; a++)
     {
       prev=counter;
       // 가장 큰 칸 찾기
-      int max_space=0;
-      int I, J;
-      for (int i=1; i<=R; i++) for (int j=1; j<=C; j++)
-      {
-        if (grid[i][j]>max_space and visit[i][j]==0)
-        {
-          max_space=grid[i][j];
-          I=i; J=j;
-        }
-      }
-      visit[I][J]
+      auto it = coordinates.end();
+      it--;
+      int i = (*it).second.first, j = (*it).second.second;
+      int size=(*it).first;
       // 가장 큰 칸에서 올리기
-      for (int i=1; i<=R; i++) for (int j=1; j<=C; j++)
+      for (int d=0; d<4; d++)
       {
-        // 가장 큰 칸일때
-        if (grid[i][j]==max_space)
+        if ((i+dy[d]>=1 and i+dy[d]<=R) and (j+dx[d]>=1 and j+dx[d]<=C))
         {
-          for (int d=0; d<4; d++)
+          int diff=size-grid[i+dy[d]][j+dx[d]];
+          if (diff>1)
           {
-            if ((i+dy[d]>=1 and i+dy[d]<=R) and (j+dx[d]>=1 and j+dx[d]<=C))
-            {
-              int diff=grid[i][j]-grid[i+dy[d]][j+dx[d]];
-              if (diff>1)
-              {
-                grid[i+dy[d]][j+dx[d]]+=(diff-1);
-                counter+=(diff-1);
-              }
-            }
+            coordinates.erase(coordinates.find(make_pair(grid[i+dy[d]][j+dx[d]], make_pair(i+dy[d], j+dx[d]))));
+            grid[i+dy[d]][j+dx[d]]+=(diff-1);
+            coordinates.insert(make_pair(grid[i+dy[d]][j+dx[d]], make_pair(i+dy[d], j+dx[d])));
+            counter+=(diff-1);
           }
         }
       }
+      // 지우기
+      coordinates.erase(--coordinates.end());
     }
+    //for (int i=1; i<=R; i++) for (int j=1; j<=C; j++) cout << grid[i][j];
     cout << "Case #" << t << ": " << counter << "\n";
   }
 }
+
 
 /*
 3
@@ -74,5 +69,5 @@ int main()
 3 3
 5 1 1
 1 2 1
-4 1 1
+4 1 5
 */
