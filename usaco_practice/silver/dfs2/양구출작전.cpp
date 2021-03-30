@@ -36,9 +36,9 @@ void cnt_sheep(int cur, int wolf)
         아이디어:
         각 섬마다 wolf 누적합을 array에 저장함.
         */
+        fucking_wolves[cur]=wolves;
     }
 }
-
 
 int main()
 {
