@@ -2,19 +2,19 @@
 using namespace std;
 
 int arr[25]={};
-int n, b;
-int closest=1e9;
-int heights[25]={};
+int c, b;
+int closest=0;
+int calories[25]={};
 
 void per(int cur)
 {
-    if (cur==n)
+    if (cur==b)
     {
         int sum=0;
-        for (int i=0; i<n; i++)
+        for (int i=0; i<b; i++)
         {
-            if (arr[i]==2) sum+=heights[i];
-            if (sum>=b and sum<closest) closest=sum;
+            if (arr[i]==2) sum+=calories[i];
+            if (sum<=c and sum>closest) closest=sum;
         }
         return;
     }
@@ -28,8 +28,9 @@ int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    cin >> n >> b;
-    for (int i=0; i<n; i++) cin >> heights[i];
+    cin >> c >> b;
+    for (int i=0; i<b; i++) cin >> calories[i];
     per(0);
-    cout << closest-b;
+    cout << closest;
+    return 0;
 }
