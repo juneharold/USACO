@@ -33,27 +33,10 @@ void dfs(int cur, int color)
     if (check==0) return;
 }
 
-void ToBinary(long long number)
-{
-    // array to store binary number
-    int binaryNum[32];
-    // counter for binary array
-    int i = 0;
-    while (number > 0) {
-        // storing remainder in binary array
-        binaryNum[i] = number % 2;
-        number = number / 2;
-        i++;
-    }
-    // printing binary array in reverse order
-    for (int j = i - 1; j >= 0; j--)
-        cout << binaryNum[j];
-}
-
 int main()
 {
-    //freopen("revegetate.in", "r", stdin);
-    //freopen("revegetate.out", "w", stdout);
+    freopen("revegetate.in", "r", stdin);
+    freopen("revegetate.out", "w", stdout);
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int n, m; cin >> n >> m;
@@ -70,14 +53,21 @@ int main()
         if (visit[i]==0)
         {
             dfs(i, 1);
-            if (check==1) counter++;
+            if (check==1) {
+                counter++;
+                //cout << "here" << i << "\n";
+            }
         }
     }
-    long long ans=1;
-    for (int i=0; i<counter; i++) ans*=2;
+    if (counter>=1)
+    {
+        cout << "1";
+        for (int i=0; i<counter; i++) cout << "0";
+    }
+    else cout << "0";
     //cout << ans;
-    if (ans==1) cout << 0;
-    else ToBinary(ans);
+    //if (ans==1) cout << 0;
+    //else ToBinary(ans);
 }
 
 /*
@@ -94,4 +84,5 @@ S 5 6
 D 7 8
 D 8 9
 D 7 9
+
 */
