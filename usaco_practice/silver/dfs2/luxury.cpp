@@ -52,8 +52,8 @@ void cycle(int cur)
 
 int main()
 {
-    freopen("cruise.in", "r", stdin);
-    freopen("cruise.out", "w", stdout);
+    //freopen("cruise.in", "r", stdin);
+    //freopen("cruise.out", "w", stdout);
     cin >> n >> m >> k;
     for (int i=1; i<=n; i++) {
         int left, right; cin >> left >> right;
