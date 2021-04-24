@@ -7,6 +7,7 @@ m-step process를 한 번 실행 했을때 각 칸이 어디로 가는지 알아
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <cstdio>
 using namespace std;
 
 int n, m, k;
@@ -17,10 +18,13 @@ int graph[100005]={};
 int visit[100005]={};
 int cnt_node=0;
 vector <int> nodes;
+int num_node=0;
+vector <int> path;
 
 void cycle(int cur)
 {
     visit[cur]=1;
+    path.push_back(cur);
     cnt_node++;
     int next=graph[cur];
     if (visit[next]==0) cycle(next);
@@ -61,19 +65,28 @@ int main()
     for (int i=1; i<=n; i++) {
         graph[arr[i]]=i;
     }
+    //for (int i=1; i<=n; i++) cout << i << " " << graph[i] << "\n";
+    for (int i=1; i<=n; i++) arr[i]=i;
     //cycle에 있는 node의 갯수, 모든 node는 싸이클에 포함되어 있음
     for (int i=1; i<=n; i++) {
         if (visit[i]==0) cycle(i);
-        nodes.push_back(cnt_node);
-        cnt_node=0;
+        //nodes.push_back(cnt_node);
+        num_node=path.size();
+        if (num_node==0) continue;
+        int mod=k%num_node;
+        for (int j=0; j<num_node; j++) {
+            int ind=path[j];
+            arr[ind]=path[(j+num_node-mod)%num_node];
+            //cout << ind << arr[ind] << "\n";
+        }
+        path.clear();
     }
-    // 최소공배수 구하기
+    /* 최소공배수 구하기
     int LCM=1;
     for (int i=0; i<nodes.size(); i++) {
         if (nodes[i]==0) continue;
         LCM=lcm(nodes[i], LCM);
     }
-    for (int i=1; i<=n; i++) arr[i]=i;
     if (LCM>=k) {
         for (int i=0; i<k%LCM; i++) {
             for (int j=0; j<m; j++) {
@@ -90,7 +103,7 @@ int main()
                 reverse(&arr[from], &arr[to+1]);
             }
         }
-    }
+    }*/
     for (int i=1; i<=n; i++) cout << arr[i] << "\n";
     return 0;
 }
