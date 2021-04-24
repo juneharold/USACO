@@ -30,20 +30,6 @@ void cycle(int cur)
     if (visit[next]==0) cycle(next);
 }
 
-// Recursive function to return gcd of a and b
-int gcd(int a,  int b)
-{
-  if (b == 0)
-    return a;
-  return gcd(b, a % b);
-}
-
-// Function to return LCM of two numbers
-int lcm(int a, int b)
-{
-    return (a / gcd(a, b)) * b;
-}
-
 int main()
 {
     freopen("swap.in", "r", stdin);
@@ -65,45 +51,19 @@ int main()
     for (int i=1; i<=n; i++) {
         graph[arr[i]]=i;
     }
-    //for (int i=1; i<=n; i++) cout << i << " " << graph[i] << "\n";
     for (int i=1; i<=n; i++) arr[i]=i;
     //cycle에 있는 node의 갯수, 모든 node는 싸이클에 포함되어 있음
     for (int i=1; i<=n; i++) {
         if (visit[i]==0) cycle(i);
-        //nodes.push_back(cnt_node);
         num_node=path.size();
         if (num_node==0) continue;
         int mod=k%num_node;
         for (int j=0; j<num_node; j++) {
             int ind=path[j];
             arr[ind]=path[(j+num_node-mod)%num_node];
-            //cout << ind << arr[ind] << "\n";
         }
         path.clear();
     }
-    /* 최소공배수 구하기
-    int LCM=1;
-    for (int i=0; i<nodes.size(); i++) {
-        if (nodes[i]==0) continue;
-        LCM=lcm(nodes[i], LCM);
-    }
-    if (LCM>=k) {
-        for (int i=0; i<k%LCM; i++) {
-            for (int j=0; j<m; j++) {
-                int from=seq[j].first, to=seq[j].second;
-                reverse(&arr[from], &arr[to+1]);
-            }
-        }
-    }
-    else
-    {
-        for (int i=0; i<k; i++) {
-            for (int j=0; j<m; j++) {
-                int from=seq[j].first, to=seq[j].second;
-                reverse(&arr[from], &arr[to+1]);
-            }
-        }
-    }*/
     for (int i=1; i<=n; i++) cout << arr[i] << "\n";
     return 0;
 }
