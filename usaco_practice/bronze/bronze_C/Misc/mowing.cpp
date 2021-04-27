@@ -7,11 +7,11 @@ pair <int, int> field[2001][2001]={}; // first is time passed, second is mowed (
 
 int main()
 {
-    freopen("mowing.in", "r", stdin);
-    freopen("mowing.out", "w", stdout);
+    //freopen("mowing.in", "r", stdin);
+    //freopen("mowing.out", "w", stdout);
     int N;
-    cin >> N; 
-    //start at 1000, 1000 
+    cin >> N;
+    //start at 1000, 1000
     int cur_x=1000, cur_y=1000;
     int time=0;
     int min_X=1000;
@@ -25,7 +25,7 @@ int main()
             if (field[cur_x][cur_y].second==1)
                 {
                     int timediff=time-field[cur_x][cur_y].first;
-                    if (timediff<min_X) 
+                    if (timediff<min_X)
                     {
                         min_X = timediff;
                     }
@@ -59,17 +59,6 @@ int main()
                 time += 1;
             }
         }
-        /* adding time
-        for (int a=0; a<1000; a++)
-        {
-            for (int b=0; b<1000; b++)
-            {
-                if (field[a][b].second==1)
-                {
-                    field[a][b].first += steps;
-                }
-            }
-        }*/    
     }
     if (min_X==1000)
     {

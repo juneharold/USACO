@@ -9,8 +9,8 @@ vector <int> num;
 
 int main()
 {
-    freopen("pairup.in", "r", stdin);
-    freopen("pairup.out", "w", stdout);
+    //freopen("pairup.in", "r", stdin);
+    //freopen("pairup.out", "w", stdout);
     int n; cin >> n;
     int numcow=0;
     for (int i=0; i<n; i++) {
