@@ -39,25 +39,7 @@ int main()
             MAXcows=to-from;
         }
     }
-    /*
-    for (int i=1; i<=N; i++)
-    {
-        for (int j=i-MAXcows; j<=i; j++)
-        {
-            if (i-j<MAXcows)
-            {
-                break;
-            }
-            if ((PFS[i]-PFS[j-1])%7==0)
-            {
-                if (i-j>MAXcows)
-                {
-                    MAXcows=i-j;
-                }
-            }
-        }
-    }*/
-    cout << MAXcows; 
+    cout << MAXcows;
 }
 
 /*

@@ -1,10 +1,12 @@
 // Promotion counting
-
 #include <iostream>
+#include <cstdio>
 using namespace std;
 
 int main()
 {
+    freopen("promote.in", "r", stdin);
+    freopen("promote.out", "w", stdout);
     int brnz_bef, brnz_aft;
     int silv_bef, silv_aft;
     int gold_bef, gold_aft;
