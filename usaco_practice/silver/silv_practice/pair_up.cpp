@@ -4,33 +4,37 @@
 #include <cstdio>
 using namespace std;
 
-pair <int, int> ynx[100005];
-vector <int> num;
+pair <int, int> cows[100005]; //first is output amount, second is the number of cows
 
 int main()
 {
     //freopen("pairup.in", "r", stdin);
     //freopen("pairup.out", "w", stdout);
     int n; cin >> n;
-    int numcow=0;
     for (int i=0; i<n; i++) {
-        cin >> ynx[i].second >>  ynx[i].first;
-        numcow+=ynx[i].second;
+        cin >> cows[i].second >>  cows[i].first;
     }
-    sort(ynx, ynx+n); //시간에 따라 오름차순 정리
-    for (int i=0; i<n; i++) {
-        //cout << i << " " << ynx[i].second << "\n";
+    sort(cows, cows+n); //시간에 따라 오름차순 정리
+    int maxnum=0, low=0, high=n-1;
+    while (low <= high) {
+        int x = min(cows[low].second, cows[high].second);
+        if (low==high) x /= 2;
+        maxnum = max(maxnum, cows[low].first + cows[high].first);
+        cows[low].second -= x;
+        cows[high].second -= x;
+        if (cows[low].second == 0) low++;
+        if (cows[high].second == 0) high--;
     }
-    int start=0, end=0;
-    for (int i=0; i<n; i++) {
-        /*
-        ynx[i].first+ynx[n-1-j].first
-        앞에서부터 second 합이 뒤에서부터과 겹치면
-        */
-        
-    }
-    //for (int i=0; i<num.size(); i++) cout << num[i] << "\n";
-    int large=0;
-    for (int i=0; i<num.size(); i++) if (num[i]>large) large=num[i];
-    cout << large;
+    cout << maxnum;
 }
+
+/*
+7
+2 1
+2 3
+1 6
+1 7
+3 8
+1 10
+2 11
+*/
