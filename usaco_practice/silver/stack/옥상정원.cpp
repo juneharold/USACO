@@ -5,28 +5,31 @@ using namespace std;
 int main()
 {
     int n; cin >> n;
-    stack <int> bldg;
+    stack <int> s;
     long long cnt=0;
     for (int i=0; i<n; i++) {
         int num; cin >> num;
-        if (bldg.empty()) {
-            bldg.push(num);
+        if (s.empty()) {
+            s.push(num);
         }
-        else if (bldg.top()>num) {
-            cnt+=bldg.size();
-            bldg.push(num);
+        else if (s.top()>num) {
+            cnt+=s.size();
+            s.push(num);
         }
         else {
-            while (!bldg.empty()) {
-                if (bldg.top()>num) {
-                    cnt+=bldg.size();
-                    bldg.push(num);
+            while (!s.empty()) {
+                if (s.top()>num) {
+                    cnt+=s.size();
+                    s.push(num);
+                    break;
+                }
+                else if (s.size()==1 and s.top()<=num) {
+                    s.pop();
+                    s.push(num);
                     break;
                 }
                 else {
-                    bldg.pop();
-                    if (bldg.empty()) bldg.push(num);
-                    break;
+                    s.pop();
                 }
             }
         }
