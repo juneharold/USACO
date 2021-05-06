@@ -1,9 +1,11 @@
 #include <iostream>
 #include <stack>
 #include <string>
+#include <algorithm>
 using namespace std;
 
-int pfs[100005]={}; //0베이스
+int pfs[100005]={}; //1베이스
+int sfs[100005]={};
 
 int main()
 {
@@ -13,11 +15,7 @@ int main()
     long long cnt=0;
     for (int i=0; i<n; i++) {
         int c=seq[i];
-        if (s.empty()) {
-            cnt++;
-            s.push(c);
-        }
-        else if (s.top()<c) {
+        if (s.empty() or s.top()<c) {
             cnt++;
             s.push(c);
         }
@@ -26,21 +24,34 @@ int main()
         }
         pfs[i+1]=cnt;
     }
-    for (int i=0; i<q; i++) {
-        int a, b; cin >> a >> b;
-        int ans;
-        //cout << seq[b] << seq[a-2] << " ";
-        if (a==1 or seq[b]>seq[a-2]) {
-            ans=cnt-(pfs[b]-pfs[a-1])+1;
+    cnt=0;
+    stack <int> bs;
+    reverse(seq.begin(), seq.end());
+    for (int i=0; i<n; i++) {
+        int c=seq[i];
+        if (bs.empty() or bs.top()<c) {
+            cnt++;
+            bs.push(c);
         }
         else {
-            ans=cnt-(pfs[b]-pfs[a-1]);
+            bs.push(c);
         }
+        sfs[i+1]=cnt;
+    }
+    for (int i=0; i<=n; i++) cout << sfs[i] << " ";
+    for (int i=0; i<q; i++) {
+        int a, b; cin >> a >> b;
+        int ans=(pfs[a-1])+(sfs[n-b]);
         cout << ans << "\n";
     }
 }
 
 /*
+8 2
+ABBAABCB
+3 6
+1 4
+
 4 1
 ABCD
 1 2
