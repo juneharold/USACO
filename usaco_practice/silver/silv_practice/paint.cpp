@@ -15,30 +15,26 @@ int main()
     long long cnt=0;
     for (int i=0; i<n; i++) {
         int c=seq[i];
+        while (!s.empty() && s.top() > c) s.pop();
         if (s.empty() or s.top()<c) {
             cnt++;
-            s.push(c);
-        }
-        else {
             s.push(c);
         }
         pfs[i+1]=cnt;
     }
     cnt=0;
-    stack <int> bs;
     reverse(seq.begin(), seq.end());
+    stack <int> bs;
     for (int i=0; i<n; i++) {
         int c=seq[i];
+        while (!bs.empty() && bs.top() > c) bs.pop();
         if (bs.empty() or bs.top()<c) {
             cnt++;
             bs.push(c);
         }
-        else {
-            bs.push(c);
-        }
         sfs[i+1]=cnt;
     }
-    for (int i=0; i<=n; i++) cout << sfs[i] << " ";
+    //for (int i=0; i<=n; i++) cout << pfs[i] << " ";
     for (int i=0; i<q; i++) {
         int a, b; cin >> a >> b;
         int ans=(pfs[a-1])+(sfs[n-b]);
