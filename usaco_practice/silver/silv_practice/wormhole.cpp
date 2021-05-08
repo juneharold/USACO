@@ -22,23 +22,23 @@ int main()
     //freopen("wormsort.in", "r", stdin);
     //freopen("wormsort.out", "w", stdout);
     int N, M; cin >> N >> M;
-    for (int i=1; i<=N; i++) 
+    for (int i=1; i<=N; i++)
     {
         cin >> pos[i];
     }
     // seeing if all are in order
     int indic=1;
-    for (int i=1; i<=N; i++) 
+    for (int i=1; i<=N; i++)
     {
         if (pos[i]!=i) indic=0;
     }
-    if (indic==1) 
+    if (indic==1)
     {
         cout << -1;
-        return 0;
+        exit(0);
     }
     // taking in input
-    for (int i=0; i<M; i++) 
+    for (int i=0; i<M; i++)
     {
         int a, b, w; cin >> a >> b >> w;
         graph[a].push_back(make_pair(b, w));
@@ -50,9 +50,9 @@ int main()
         int mid=(low+high)/2+1;
         int indicator=1;
         for (int i=1; i<=N; i++)
-        {  
-            dfs(pos[i], mid); 
-            if (visit[pos[i]]!=1) 
+        {
+            dfs(pos[i], mid);
+            if (visit[pos[i]]!=1)
             {
                 indicator=0;
             }
@@ -65,11 +65,9 @@ int main()
 }
 
 /*
-4 3 
+4 3
 4 2 1 3
 1 2 1
-3 4 2 
+3 4 2
 1 3 100
 */
-
-
