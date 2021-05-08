@@ -2,16 +2,16 @@
 #include <algorithm>
 using namespace std;
 
-pair <int, int> ab[300005];
+pair <long long, long long> ab[300005];
 
 int main()
 {
-    int n, m; cin >> n >> m;
+    long long n, m; cin >> n >> m;
     for (int i=0; i<n; i++) {
         cin >> ab[i].second >> ab[i].first;
     }
     sort(ab, ab+n);
-    int ans=0, end=0;
+    long long ans=0, end=0;
     for (int i=0; i<n; i++) {
         if (ab[i].second<ab[i].first) continue;
         if (ab[i].first>=end) {
