@@ -1,20 +1,12 @@
 // 알람 시계
-#include <cstdio>
+#include <iostream>
+using namespace std;
 
 int main()
 {
-    int H, M;
-    scanf("%d %d", &H, &M);
-    if (M>=45)
-    {
-        printf("%d %d", H, M-45);
-    }
-    else if (M<45 && H>1)
-    {
-        printf("%d %d", H-1, M+15);
-    }
-    else if (M<45 && H==0)
-    {
-        printf("%d %d", 23, M+15);
-    }
+    int H, M; cin >> H >> M;
+    int min=(M+15)%60;
+    if (M>=45) cout << H << " " << min;
+    else if (M<45 and H==0) cout << 23 << " " << min;
+    else cout << H-1 << " " << min;
 }
