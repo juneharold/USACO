@@ -1,13 +1,12 @@
 #include <iostream>
 #include <algorithm>
-#include <stack>
 using namespace std;
 
-int c[1000005]={}; //소가 만드는 우유
-pair <int, int> qp[1000005]; // 우유 구매 양, 구매 가격
-int r[1000005]={}; //소 판매 가격.
+int c[100005]={}; //소가 만드는 우유
+pair <long long, int> qp[100005]; // 우유 구매 양, 구매 가격
+int r[100005]={}; //소 판매 가격.
 
-bool cmp1 (pair<int, int> a, pair<int, int> b) {
+bool cmp (pair <long long, int> a, pair <long long, int> b){
     return a.second>b.second;
 }
 
@@ -22,52 +21,36 @@ int main()
     int N, M, R; cin >> N >> M >> R;
     for (int i=0; i<N; i++) cin >> c[i];
     for (int i=0; i<M; i++) cin >> qp[i].first >> qp[i].second; //willing to buy up to q gallons of milk for p cents per gallon
+    qp[M+1]={(long long)1e15, 0};
     for (int i=0; i<R; i++) cin >> r[i];
 
     sort(c, c+N);
-    long long pfs=0;
-    for (int i=0; i<N; i++) {
-        pfs+=c[i];
-        c[i]=pfs;
-    }
+    sort(qp, qp+M, cmp);
 
-    sort(qp, qp+M, cmp1);
-
+    R = max(R, N);
     sort(r, r+R, cmp2);
-    pfs=0;
-    for (int i=0; i<R; i++) {
-        pfs+=r[i];
-        r[i]=pfs;
-    }
 
-    long long ans=0;
-    long long extract=0;
-    long long ri=0;
+    long long sum = 0, ans = 0;
+    for (int i=0; i<N; ++i)
+        sum += r[i];
+    ans = sum;
 
-
-    for (int i=0; i<N; i++) {
-        // i까지 소를 팔고, i부터 소를 짜기. 범위 조심.
-        long long sell=r[min(R-1, i)];
-
-        long long gallon=c[N-1]-c[i];
-
-        
-
-        /*
-        while (true) {
-            if (gallon-qp[ri].first<0 or ri==M) break;
-            gallon-=qp[ri].first;
-            extract+=qp[ri].first*qp[ri].second;
-            ri++;
-        }*/
-
-        if (ri!=M) {
-            extract+=gallon*qp[ri].second;
+    int bIdx = 0;
+    for (int i=N-1; i>=0; --i) {
+        sum -= r[i];
+        long long left = c[i];
+        while (left) {
+            int use = min(left, qp[bIdx].first);
+            sum += qp[bIdx].second * use;
+            left -= use;
+            qp[bIdx].first -= use;
+            if (qp[bIdx].first == 0)
+                bIdx++;
         }
-
-        if (sell+extract>ans) ans=sell+extract;
+        ans = max(ans, sum);
     }
     cout << ans;
+    return 0;
 }
 
 /*
