@@ -1,4 +1,5 @@
 #include <iostream>
+#include <numeric>
 #include <algorithm>
 using namespace std;
 
@@ -32,7 +33,6 @@ void dfs(int cur_x, int cur_y) {
         int next_x=cur_x+dx[i], next_y=cur_y+dy[i];
         if (visit[next_x][next_y]==0 and open[next_x][next_y]==1) dfs(next_x, next_y);
     }
-    dfs(1, 1);
 }
 
 int main()
@@ -45,6 +45,10 @@ int main()
     }
     sort(light, light+m, cmp);
     dfs(1, 1);
+    for (int i=0; i<n*n; i++) {
+        dfs(1, 1);
+        fill(&visit[0][0], &visit[100][100], 0);
+    }
     int ans=0;
     for (int i=1; i<=n; i++) for (int j=1; j<=n; j++) if (open[i][j]==1) ans++;
     cout << ans;
