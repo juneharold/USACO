@@ -3,8 +3,7 @@
 #include <vector>
 using namespace std;
 
-pair <int, int> coorx[1005];
-pair <int, int> coory[1005];
+pair <int, int> coor[1005];
 
 bool cmp(pair<int, int> a, pair<int, int> b) {
     return a.second<b.second;
@@ -15,26 +14,24 @@ int main()
     int n; cin >> n;
     for (int i=0; i<n; i++) {
         int a, b; cin >> a >> b;
-        coorx[i].first=a; coorx[i].second=b;
-        coory[i].first=a; coory[i].second=b;
+        coor[i].first=a; coor[i].second=b;
     }
-    sort(coorx, coorx+n);
-    sort(coory, coory+n, cmp);
+    sort(coor, coor+n);
 
     int ans=1e9;
     for (int i=0; i<n; i++) {
-        int y=coory[i].second-1;
+        int y=coor[i].second-1;
         int top=0, bottom=0;
         for (int j=0; j<n; j++) {
-            if (coory[i].second<y) bottom++;
-            if (coory[i].second>y) top++;
+            if (coor[j].second<y) bottom++;
+            if (coor[j].second>y) top++;
         }
         int first=top, second=0, third=0, fourth=bottom;
         for (int j=0; j<n; j++) {
-            int same_x=coorx[j].first;
+            int same_x=coor[j].first;
             for (int k=j; k<n; k++) {
-                if (coorx[k].first==same_x) {
-                    if (coorx[k].second>y) {
+                if (coor[k].first==same_x) {
+                    if (coor[k].second>y) {
                         first--; second++;
                     }
                     else {
