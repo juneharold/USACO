@@ -1,11 +1,3 @@
-/*
-- 최대가 여러개
-    - 최대 중 하나가 커지거나 작아짐-->cnt가 다름
-    - 최대가 아닌 게 커지거나 같아짐 .--> current
-- 최대가 한 개
-    - 최대 중 하나가 M'이하.
-    - 최대가 아닌 게 커지거나 같아짐.
-*/
 #include <iostream>
 #include <algorithm>
 #include <set>
