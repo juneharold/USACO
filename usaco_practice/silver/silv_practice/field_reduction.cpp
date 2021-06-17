@@ -31,56 +31,53 @@ int main()
         y_order.insert({x, y});
     }
 
-    vector<pair<int , int>> twelve;
+    vector<pair<int , int>> MAXX;
+    vector<pair<int , int>> MINX;
+    vector<pair<int , int>> MAXY;
+    vector<pair<int , int>> MINY;
     // first 3
     auto start_x=x_order.begin();
-    twelve.push_back(*start_x); start_x++;
-    twelve.push_back(*start_x); start_x++;
-    twelve.push_back(*start_x);
+    MINX.push_back(*start_x); start_x++;
+    MINX.push_back(*start_x); start_x++;
+    MINX.push_back(*start_x); start_x++;
+    MINX.push_back(*start_x);
     // last 3
     auto end_x=x_order.end(); end_x--;
-    twelve.push_back(*end_x); end_x--;
-    twelve.push_back(*end_x); end_x--;
-    twelve.push_back(*end_x);
+    MAXX.push_back(*end_x); end_x--;
+    MAXX.push_back(*end_x); end_x--;
+    MAXX.push_back(*end_x); end_x--;
+    MAXX.push_back(*end_x);
     // first 3
     auto start_y=y_order.begin();
-    twelve.push_back(*start_y); start_y++;
-    twelve.push_back(*start_y); start_y++;
-    twelve.push_back(*start_y);
+    MINY.push_back(*start_y); start_y++;
+    MINY.push_back(*start_y); start_y++;
+    MINY.push_back(*start_y); start_y++;
+    MINY.push_back(*start_y);
     // last 3
     auto end_y=y_order.end(); end_y--;
-    twelve.push_back(*end_y); end_y--;
-    twelve.push_back(*end_y); end_y--;
-    twelve.push_back(*end_y);
+    MAXY.push_back(*end_y); end_y--;
+    MAXY.push_back(*end_y); end_y--;
+    MAXY.push_back(*end_y); end_y--;
+    MAXY.push_back(*end_y);
 
-    int ans=1e9;
-    for (int i=0; i<12; i++) {
-        for (int j=0; j<12; j++) {
-            for (int k=0; k<12; k++) {
-                if (i==j or j==k or k==i) continue;
+    long long ans=40005*40005;
+    for (int i=0; i<4; i++) {
+        for (int j=0; j<4; j++) {
+            for (int k=0; k<4; k++) {
+                for (int l=0; l<4; l++) {
+                    int max_x=MAXX[i].first, min_x=MINX[j].first, max_y=MAXY[k].second, min_y=MINY[l].second;
 
-                x_order.erase(twelve[i]);
-                x_order.erase(twelve[j]);
-                x_order.erase(twelve[k]);
-                y_order.erase(twelve[i]);
-                y_order.erase(twelve[j]);
-                y_order.erase(twelve[k]);
+                    int cnt=0;
+                    for (auto x: x_order) {
+                        if (x.first>max_x or x.first<min_x) cnt++;
+                        else if (x.second>max_y or x.second<min_y) cnt++;
+                    }
 
-                auto MINX=x_order.begin();
-                auto MINY=y_order.begin();
-                auto MAXX=x_order.end(); MAXX--;
-                auto MAXY=y_order.end(); MAXY--;
-
-                int min_x=MINX->first, min_y=MINY->second, max_x=MAXX->first, max_y=MAXY->second;
-                int area=(max_y-min_y)*(max_x-min_x);
-                if (area<ans) ans=area;
-
-                x_order.insert(twelve[i]);
-                x_order.insert(twelve[j]);
-                x_order.insert(twelve[k]);
-                y_order.insert(twelve[i]);
-                y_order.insert(twelve[j]);
-                y_order.insert(twelve[k]);
+                    if (cnt<=3) {
+                        long long area=(max_x-min_x)*(max_y-min_y);
+                        ans=min(area, ans);
+                    }
+                }
             }
         }
     }
