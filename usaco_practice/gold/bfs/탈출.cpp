@@ -31,12 +31,12 @@ int main()
     }
 
     while (!qw.empty()) {
-        int x=qw.front().first, y=qs.front().second;
+        int x=qw.front().first, y=qw.front().second;
         for (int i=0; i<4; i++) {
             int nx=x+dx[i], ny=y+dy[i];
             if (map[nx][ny]==NULL) continue;
 
-            if (vw[nx][ny]==0 && map[nx][ny]=='.') {
+            if (vw[nx][ny]==0 && (map[nx][ny]=='.' || map[nx][ny]=='S')) {
                 qw.push({nx, ny});
                 vw[nx][ny]=vw[x][y]+1;
             }
@@ -59,12 +59,8 @@ int main()
         }
         qs.pop();
     }
-    for (int i=1; i<=r; i++) {
-        for (int j=1; j<=c; j++) {
-            cout << vw[i][j] << " ";
-        }
-        cout << "\n";
-    }
+
     if (ans==1e9) cout << "KAKTUS";
     else cout << ans;
+    return 0;
 }
