@@ -33,18 +33,34 @@ int main()
                     if (map[next_n][next_m]=='L' && visit[next_n][next_m]==0) {
                         q.push({next_n, next_m});
                         visit[next_n][next_m]=visit[cur_n][cur_m]+1;
-                        max_dist=max(max_dist, visit[cur_n][cur_m]);
+                        max_dist=max(max_dist, visit[next_n][next_m]-1);
                     }
                 }
             }
             ans=max(ans, max_dist);
-            fill(&visit[0][0], &visit[55][55], 0);
+            fill(&visit[0][0], &visit[54][55], 0);
     }
     cout << ans;
     return 0;
 }
 
 /*
+7 7
+WLLLLLW
+LWLWLWW
+LLLWLWW
+LWWWLWW
+LLLLLWW
+LWWWWWW
+WWWWWWW
+
+5 5
+LLWWW
+LLLWW
+WLLLW
+WWLLL
+WWWLL
+
 4 4
 LLWL
 LLWL
