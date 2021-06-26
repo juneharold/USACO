@@ -20,7 +20,7 @@ int main()
     for (int i=2; i<=N; i++) {
         for (int j=1; j<=W; j++) {
 
-            dp[i][j]=dp[]
+            dp[i][j]=dp[i-1]
         }
     }
     cout << ans;
