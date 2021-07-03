@@ -10,15 +10,13 @@ int days=0;
 void dfs(int cur)
 {
     numcows[cur]=1;
-    while (numcows[cur]<graph[cur].size())
-    {
+    while (numcows[cur]<graph[cur].size()) {
         numcows[cur]*=2;
         days++;
     }
-    for (int j=0; j<graph[cur].size(); j++)
-    {
+    for (int j=0; j<graph[cur].size(); j++) {
         int next=graph[cur][j];
-        if (numcows[next]==0) 
+        if (numcows[next]==0)
         {
             days++;
             numcows[cur]-=1;
@@ -46,5 +44,3 @@ int main()
 1 3
 
 */
-
-
