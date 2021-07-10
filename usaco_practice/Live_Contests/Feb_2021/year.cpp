@@ -10,29 +10,23 @@ int main()
     int N, K; cin >> N >> K;
     for (int i=0; i<N; i++) cin >> ancestor[i];
     sort(ancestor, ancestor+N);
-    // 구간 개수: K-1
     int point=0;
-    while (point<ancestor[N-1])
-    {
+    while (point<ancestor[N-1]) {
         point+=12;
     }
     int end=point;
-    int range[100000]={};  // (0, 12) (12, 24) .....
-    for (int i=0; i<N; i++)
-    {
+    int range[100000]={};
+    for (int i=0; i<N; i++) {
         range[ancestor[i]/12]+=1;
     }
     int subtract[100000]={};
     int index=0;
     int subt=0;
-    for (int i=0; i<(end/12+1); i++)
-    {
-        if (range[i]==0)
-        {
+    for (int i=0; i<(end/12+1); i++) {
+        if (range[i]==0) {
             subt+=12;
         }
-        else
-        {
+        else {
             subtract[index]=subt;
             index++;
             subt=0;
@@ -42,8 +36,7 @@ int main()
     int min;
     if (index<=K) min=0;
     else min=index-K-1;
-    for (int i=index-1; i>=min; i--)
-    {
+    for (int i=index-1; i>=min; i--) {
         end-=subtract[i];
     }
     cout << end;
@@ -63,8 +56,5 @@ int main()
 85
 46
 6
-11 
+11
 */
-
-
-
