@@ -3,43 +3,54 @@
 #include <vector>
 using namespace std;
 
-int ancestor[100005]={};
+const int MAX_N=100000;
+int N, K;
+int ancestor[MAX_N]={};
+
+bool large_first (int a, int b) {
+    return a>b;
+}
 
 int main()
 {
-    int N, K; cin >> N >> K;
+    cin >> N >> K;
     for (int i=0; i<N; i++) cin >> ancestor[i];
     sort(ancestor, ancestor+N);
-    int point=0;
-    while (point<ancestor[N-1]) {
-        point+=12;
+    int end=0;
+    while (end<ancestor[N-1]) {
+        end+=12;
     }
-    int end=point;
-    int range[100000]={};
-    for (int i=0; i<N; i++) {
-        range[ancestor[i]/12]+=1;
-    }
-    int subtract[100000]={};
-    int index=0;
-    int subt=0;
-    for (int i=0; i<(end/12+1); i++) {
-        if (range[i]==0) {
-            subt+=12;
+
+    vector <int> intervals;
+    intervals.push_back((ancestor[0]/12)*12);
+
+    int prev=ancestor[0];
+    for (int i=1; i<N; i++) {
+        if (prev/12==ancestor[i]/12) {
+            intervals.push_back(0);
         }
         else {
-            subtract[index]=subt;
-            index++;
-            subt=0;
+            int a=ancestor[i]/12;
+            int b=(prev+12)/12;
+            int c=a*12;
+            int d=b*12;
+            //cout << a << " " << b << " " << c << " " << d << "\n";
+            intervals.push_back(abs(c-d));
+        }
+        prev=ancestor[i];
+    }
+    sort(intervals.begin(), intervals.end(), large_first);
+
+    K--;
+    for (auto x: intervals) {
+        if (K==0) break;
+        else{
+            end-=x;
+            K--;
         }
     }
-    sort(subtract, subtract+index);
-    int min;
-    if (index<=K) min=0;
-    else min=index-K-1;
-    for (int i=index-1; i>=min; i--) {
-        end-=subtract[i];
-    }
     cout << end;
+    return 0;
 }
 
 
