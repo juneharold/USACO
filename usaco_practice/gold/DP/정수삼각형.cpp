@@ -19,6 +19,6 @@ int main()
     }
 
     int ans=0;
-    for (int i=2; i<=n; i++) ans=max(ans, dp[n][i]);
+    for (int i=1; i<=n; i++) ans=max(ans, dp[n][i]);
     cout << ans;
 }
