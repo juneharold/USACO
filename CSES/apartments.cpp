@@ -1,42 +1,30 @@
 #include <iostream>
+#include <algorithm>
 using namespace std;
+
+const long long MAX_NM=2e5+5;
+long long target[MAX_NM]={}, apartments[MAX_NM]={};
 
 int main()
 {
-    int n, m, k;
-    cin >> n >> m >> k;
-    int per[n];
-    for (int p=0; p<n; p++)
-    {
-        int q;
-        cin >> q;
-        per[p] = q;
-        //printf("%d", q);
-    }
-    int apt[m];
-    for (int i=0; i<m; i++)
-    {
-        int t;
-        cin >> t;
-        apt[i] = t;
-    }
-    sort(per, per+n);
-    sort(apt, apt+m);
-    int ans=0;
-    // going through per
-    int pindex = 0;
-    int aindex = 0;
-    while (pindex<=n)
-    {
-        // going through apt
-        for (int v=0; v<m; v++)
-        {
-            if (per[pindex]-k<=apt[v] && per[pindex]+k>=apt[v])
-            {
-                ans += 1;
-                break;
-            }
+    long long n, m, k; cin >> n >> m >> k;
+    for (long long i=0; i<n; i++) cin >> target[i];
+    for (long long i=0; i<m; i++) cin >> apartments[i];
+
+    sort(target, target+n);
+    sort(apartments, apartments+m);
+
+    long long ind=0, ans=0;
+    for (long long i=0; i<m; i++) {
+        if (apartments[i]+k<target[ind]) continue;
+
+        while (target[ind]<apartments[i]-k) {
+            ind++;
+        }
+        if (apartments[i]-k<=target[ind] && target[ind]<=apartments[i]+k) {
+            ans++;
+            ind++;
         }
     }
-    cout << ans << endl;
+    cout << ans;
 }
