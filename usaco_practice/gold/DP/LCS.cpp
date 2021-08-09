@@ -38,7 +38,6 @@ int main()
             i--;
         }
     }
-
     int from=ans.size()-1;
     for (int a=from; a>=0; a--) cout << ans[a];
 }
