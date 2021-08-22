@@ -21,6 +21,7 @@ void solve (int cur, int parent) {
             dp[cur][0]+=dp[nx][1];
             s[cur][0].insert(s[nx][1].begin(), s[nx][1].end());
         }
+        //dp[cur][0]+=max(dp[nx][0], dp[nx][1]);
     }
 
     dp[cur][1]=w[cur]; s[cur][1].insert(cur);
@@ -50,8 +51,6 @@ int main()
         cout << dp[1][1] << "\n";
         for (auto e: s[1][1]) cout << e << " ";
     }
-
-
     //cout << max(dp[1][0], dp[1][1]);
 
     /*
