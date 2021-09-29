@@ -7,7 +7,6 @@ int N, dp[MAX]={}, T[MAX], P[MAX];
 
 int main()
 {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
     cin >> N;
     for (int i=1; i<=N; i++) cin >> T[i] >> P[i];
 
