@@ -19,6 +19,7 @@ int main()
 
             for (int n=0; n<=N; n++) {
                 if (j-n>=0 && j-n<=N) dp[i][j]+=dp[i-1][j-n];
+                dp[i][j]%=(ll)1e9;
             }
         }
     }
