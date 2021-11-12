@@ -1,37 +1,59 @@
 #include <iostream>
 #include <algorithm>
+#include <set>
 using namespace std;
-
 #define f first
 #define s second
 
-const int MAX=1e3+2;
-int N, B, visit[MAX][MAX]={}, snow[MAX]={};
-pair<int, int> boots[MAX];
-
-void solve(int a, int cur) {
-    visit[a][cur]=1;
-    int d1=boots[a].f, s1=boots[a].s;
-
-    //a신발로 갈 수 있는 칸들.
-    for (int i=0; i<=s1; i++) {
-        int nx=cur+i;
-        if (nx>N) continue;
-        if (snow[nx]<=d1 && visit[a][nx]==0) solve(a, nx);
-    }
-}
+const int MAX=1e5+2;
+int N, B, ans[MAX]={};
+set<pair<int, int>> path, parts;
+multiset<int> lengths;
+struct query{
+    int depth, step, q;
+};
+query boots[MAX];
+bool cmp (query a, query b) { return a.depth>b.depth; }
 
 int main()
 {
-    freopen("snowboots.in", "r", stdin);
-    freopen("snowboots.out", "w", stdout);
+    ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
     cin >> N >> B;
-    for (int i=1; i<=N; i++) cin >> snow[i];
-    for (int i=1; i<=B; i++) cin >> boots[i].f >> boots[i].s;
+    for (int i=1; i<=N; i++) {
+        int depth; cin >> depth;
+        path.insert({depth, i});
+        parts.insert({i, i+1});
+        lengths.insert(1);
+    }
+    for (int i=1; i<=B; i++) {
+        cin >> boots[i].depth >> boots[i].step;
+        boots[i].q=i;
+    }
+
+    sort(&boots[1], &boots[B+1], cmp);
+
 
     for (int i=1; i<=B; i++) {
-        solve(i, 1);
-        if (visit[i][N]==1) cout << 1 << "\n";
-        else cout << 0 << "\n";
+        while ((*--path.end()).f>boots[i].depth) {
+            auto it=path.end();
+            it--;
+            auto loc=parts.lower_bound({(*it).s, 0});
+
+            int b=(*loc).s, a=(*--loc).f;
+
+            parts.erase(parts.find({(*it).s, b})); lengths.erase(lengths.find(b-(*it).s));
+            parts.erase(parts.find({a, (*it).s}));  lengths.erase(lengths.find((*it).s-a));
+            parts.insert({a, b}); lengths.insert(b-a);
+            path.erase(it);
+        }
+
+        auto maxlen=*--lengths.end();
+
+        if (maxlen<=boots[i].step) ans[boots[i].q]=1;
+        else ans[boots[i].q]=0;
+
     }
+
+    for (int i=1; i<=B; i++) cout << ans[i] << "\n";
+
 }
