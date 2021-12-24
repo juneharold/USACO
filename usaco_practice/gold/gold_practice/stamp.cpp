@@ -7,6 +7,8 @@ ll N, M, K, dp[MAX]={}, pfs[MAX]={}, total=1;
 
 int main()
 {
+    freopen("spainting.in", "r", stdin);
+    freopen("spainting.out", "w", stdout);
     cin >> N >> M >> K;
     dp[0]=1;
     for (ll i=1; i<=N; i++) {
@@ -21,5 +23,5 @@ int main()
         pfs[i]=pfs[i-1]+dp[i]; pfs[i]%=mod;
         total*=M; total%=mod;
     }
-    cout << total-dp[N];
+    cout << (total-dp[N])%mod;
 }
