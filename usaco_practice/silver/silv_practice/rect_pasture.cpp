@@ -1,46 +1,49 @@
 #include <iostream>
 #include <algorithm>
 using namespace std;
+#define f first
+#define s second
+#define ll long long
 
-const long long MAX_N=2505;
-long long n;
-pair<long long, long long> point[MAX_N];
-pair<long long, long long> new_p[MAX_N];
-long long pfs[MAX_N][MAX_N]={};
-bool sortY (pair<long long, long long> a, pair<long long, long long> b) {
-    return a.second < b.second;
+const ll MAX_N=2505;
+ll n, pfs[MAX_N][MAX_N]={}, ans=0;
+pair<ll, ll> point[MAX_N];
+bool sortY (pair<ll, ll> a, pair<ll, ll> b) {
+    return a.s < b.s;
 }
-long long ans=0;
 
 int main()
 {
     cin >> n;
-    for (long long i=1; i<=n; i++) {
-        long long x, y; cin >> x >> y;
+    for (ll i=1; i<=n; i++) {
+        ll x, y; cin >> x >> y;
         point[i]={x, y};
     }
 
-    sort(point, point+n);
-    for (long long i=1; i<=n; i++) point[i].first=i;
-    sort(point, point+n, sortY);
-    for (long long i=1; i<=n; i++) point[i].second=i;
+    sort(&point[1], &point[n+1], sortY);
+    for (ll i=1; i<=n; i++) point[i].s=i;
+    sort(&point[1], &point[n+1]);
+    for (ll i=1; i<=n; i++) point[i].f=i;
 
-    for (long long i=1; i<=n; i++) pfs[point[i].first][point[i].second]=1;
-    for (long long i=2; i<=n; i++) {
-        for (long long j=2; j<=n; j++) {
+    //for (int i=1; i<=n; i++) cout << point[i].f << " " << point[i].s << "\n";
+
+    for (ll i=1; i<=n; i++) pfs[point[i].f][point[i].s]=1;
+
+    for (ll i=1; i<=n; i++) {
+        for (ll j=1; j<=n; j++) {
             pfs[i][j]+=pfs[i-1][j]+pfs[i][j-1]-pfs[i-1][j-1];
         }
     }
 
-    for (long long i=1; i<=n; i++) { //y1
-        for (long long j=i; j<=n; j++) { //y2
-            long long x_min=min(point[i].first, point[j].first);
-            long long x_max=max(point[i].first, point[j].first);
+    for (ll i=1; i<=n; i++) {
+        for (ll j=i; j<=n; j++) {
+            ll maxy=max(point[i].s, point[j].s), miny=min(point[i].s, point[j].s);
 
-            long long pos_l=pfs[x_min][i]-pfs[x_min][j]-pfs[0][i]+pfs[0][j];
-            long long pos_r=pfs[n][i]-pfs[n][j]-pfs[x_max][i]+pfs[x_max][j];
-            ans+=pos_l*pos_r;
+            ll above=pfs[point[j].f][n]-pfs[point[i].f-1][n]-pfs[point[j].f][maxy-1]+pfs[point[i].f-1][maxy-1];
+            ll below=pfs[point[j].f][miny]-pfs[point[i].f-1][miny];
+            ans+=above*below;
+
         }
     }
-    cout << ans;
+    cout << ans+1;
 }
