@@ -55,11 +55,9 @@ int main()
         }
 
         if (possible) {
-            //cout << mid << " T\n";
             lo=mid+1;
         }
         else {
-            //cout << mid << " F\n";
             hi=mid;
         }
     }
