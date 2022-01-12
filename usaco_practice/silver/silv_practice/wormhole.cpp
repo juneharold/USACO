@@ -2,66 +2,68 @@
 #include <algorithm>
 #include <vector>
 using namespace std;
+#define f first
+#define s second
+const int MAX=1e5+5;
 
-vector < pair<int, int> > graph[100005];
-int visit[100005]={};
-int pos[100005]={};
+int N, M, pos[MAX]={}, need[MAX]={}, visit[MAX]={};
+vector<pair<int, int>> graph[MAX];
 
-void dfs(int cur, int mid)
-{
+void dfs(int cur, int minW) {
     visit[cur]=1;
-    for (int j=0; j<graph[cur].size(); j++)
-    {
-        int next=graph[cur][j].first;
-        if (visit[next]==0 and graph[cur][j].second>=mid) dfs(next, mid);
+    for (int i=0; i<graph[cur].size(); i++) {
+        int nx=graph[cur][i].f, w=graph[cur][i].s;
+        if (w<minW) continue;
+        if (visit[nx]==0) dfs(nx, minW);
     }
 }
 
 int main()
 {
-    //freopen("wormsort.in", "r", stdin);
-    //freopen("wormsort.out", "w", stdout);
-    int N, M; cin >> N >> M;
-    for (int i=1; i<=N; i++)
-    {
+    freopen("wormsort.in", "r", stdin);
+    freopen("wormsort.out", "w", stdout);
+    int start=1e9;
+    cin >> N >> M;
+    for (int i=1; i<=N; i++) {
         cin >> pos[i];
+        if (pos[i]!=i) {
+            need[i]=1; //i번째 location 연결 필요
+            start=min(start, i);
+        }
     }
-    // seeing if all are in order
-    int indic=1;
-    for (int i=1; i<=N; i++)
-    {
-        if (pos[i]!=i) indic=0;
+    for (int i=1; i<=M; i++) {
+        int a, b, w; cin >> a >> b >> w;
+        graph[a].push_back({b, w});
+        graph[b].push_back({a, w});
     }
-    if (indic==1)
-    {
+
+    if (start==1e9) {
         cout << -1;
         exit(0);
     }
-    // taking in input
-    for (int i=0; i<M; i++)
-    {
-        int a, b, w; cin >> a >> b >> w;
-        graph[a].push_back(make_pair(b, w));
-        graph[b].push_back(make_pair(a, w));
-    }
-    int low=0, high=1000000;
-    while (low<high)
-    {
-        int mid=(low+high)/2+1;
-        int indicator=1;
-        for (int i=1; i<=N; i++)
-        {
-            dfs(pos[i], mid);
-            if (visit[pos[i]]!=1)
-            {
-                indicator=0;
-            }
+
+    int lo=1, hi=1e9+1;
+    while (lo<hi) {
+        int mid=(lo+hi)/2;
+
+        dfs(start, mid);
+
+        bool possible=true;
+        for (int i=1; i<=N; i++) {
+            if (need[i]==1 && visit[i]==0) possible=false;
+            visit[i]=0;
         }
-        fill(&visit[0], &visit[100005], 0);
-        if (indicator==0) low=mid;
-        else high=mid-1;
+
+        if (possible) {
+            //cout << mid << " T\n";
+            lo=mid+1;
+        }
+        else {
+            //cout << mid << " F\n";
+            hi=mid;
+        }
     }
-    cout << low;
+    cout << lo-1;
 }
 
 /*
