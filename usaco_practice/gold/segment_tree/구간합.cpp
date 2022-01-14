@@ -32,7 +32,7 @@ int main(){
 
     for (int i=0; i<N; i++)
     {
-        int t; cin >> t;
+        ll t; cin >> t;
         update(1, 0, N-1, i, i, t);
     }
 
