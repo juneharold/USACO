@@ -41,7 +41,7 @@ int main()
             pq.push({-d, {loc, cows[loc]}});
         }
     }
-    
+
     for (int i=1; i<=K; i++) {
         if (S[i][cows[N]]=='1') ans=min(ans, visit[N][i]);
     }
