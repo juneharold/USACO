@@ -3,31 +3,38 @@
 #include <set>
 using namespace std;
 
-long long arr[50005]={};
-multiset <int> cases;
+int N, K, arr[50005]={}, p[50005]={}, pmax[50005]={};
 
 int main()
 {
-    cases.insert({0, 0});
     //freopen("diamond.in", "r", stdin);
     //freopen("diamond.out", "w", stdout);
-    long long n, k; cin >> n >> k;
-    for (int i=0; i<n; i++) cin >> arr[i];
-    sort(arr, arr+n);
+    cin >> N >> K;
+    for (int i=1; i<=N; i++) cin >> arr[i];
+    sort(&arr[1], &arr[N+1]);
 
-    for (int i=0; i<n; i++) {
-        // 현재 숫자 arr[i]에서 최대 k인 숫자 찾기
-        int ub=upper_bound(&arr[0], &arr[n], arr[i]+k)-&arr[0];
-        ub--;
-        cases.insert(ub-i+1);
-        i=ub;
+    fill(&p[1], &p[N+1], 1);
+
+    for (int i=1; i<=N; i++) {
+        int lo=i, hi=N;
+        while (lo<hi) {
+            int mid=(lo+hi)/2+1;
+            if (abs(arr[i]-arr[mid])<=K) lo=mid;
+            else hi=mid-1;
+        }
+        p[i]=lo-i+1;
     }
-    long long ans=0;
-    auto it=cases.end();
-    it--;
-    ans+=*it;
-    it--;
-    ans+=*it;
+
+    int mx=0;
+    for (int i=N; i>=1; i--) {
+        mx=max(mx, p[i]);
+        pmax[i]=mx;
+    }
+
+    int ans=0;
+    for (int i=1; i<=N; i++) {
+        ans=max(ans, p[i]+pmax[i+p[i]]);
+    }
     cout << ans;
 }
 
