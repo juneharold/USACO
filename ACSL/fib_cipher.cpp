@@ -43,10 +43,7 @@ int main()
     for (int i=3; i<=20; i++) fib[i]=fib[i-1]+fib[i-2];
     for (int i=21; i<=300; i++) fib[i]=fib[i-20];
     // ^ input and preprocessing ^
-    cout << a << "\n";
-    cout << b << "\n";
-    cout << key << "\n";
-    cout << fib[20] << "\n";
+    
     //solving.
     if (type=='E') {
         message=s.substr(idx+2, s.size());
