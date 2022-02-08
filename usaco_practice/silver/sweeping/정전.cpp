@@ -1,28 +1,34 @@
 #include <iostream>
 #include <algorithm>
+#include <vector>
 using namespace std;
+#define ll long long
+#define f first
+#define s second
 
-int light[200000]={};
+ll light[150005]={}, n, l;
 
 int main()
 {
-    int n, l; cin >> n >> l;
+    cin >> n >> l;
     for (int i=0; i<n; i++) {
         cin >> light[i];
     }
-    sort(light, light+n);
-    int ans=0, end=light[0]+l;
-    int until=-1e9;
-    for (int i=1; i<n; i++) {
-        if (light[i]-l<until) {
-            ans+=end-until;
-            until=end;
-        }
-        else if (light[i]-l<end) {
-            ans+=end-(light[i]-l);
-            until=end;
-        }
-        end=light[i]+l;
+
+    vector<pair<int, int>> v;
+    for (int i=0; i<n; i++) {
+        v.push_back({light[i]-l, 0});
+        v.push_back({light[i]+l, 1});
+    }
+    sort(v.begin(), v.end());
+
+    ll ans=0, cnt=1;
+
+    for (int i=1; i<2*n; i++) {
+        if (cnt>=2) ans+=v[i].f-v[i-1].f;
+
+        if (v[i].s==0) cnt++;
+        else cnt--;
     }
     cout << ans;
 }
