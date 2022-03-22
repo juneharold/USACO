@@ -1,65 +1,74 @@
 #include <iostream>
 #include <algorithm>
-#include <queue>
-#include <cstdio>
+#include <bitset>
+#include <vector>
+#include <string>
+#include <map>
 using namespace std;
+#define ll long long
 
-int n, m;
-struct light_switch {
-    int x, y, a, b;
+struct cmp {
+    bool operator() (const bitset<35> &b1, const bitset<35> &b2) const {
+        return b1.to_ulong() < b2.to_ulong();
+    }
 };
-light_switch light[20005]={};
-int dx[4]={1, -1, 0, 0}, dy[4]={0, 0, 1, -1}, visit[105][105]={}, open[105][105]={}; //불켜짐.
-queue<pair<int, int>> q;
+
+ll N, M, n, ans=1e9;
+map<bitset<35>, ll, cmp> mp;
+vector<ll> graph[40];
+
+void dfs1(ll cur, bitset<35> b, ll cnt) {
+    //cout << cur << " " << b << endl;
+    if (cur==n) {
+        if (mp.find(b)==mp.end() || (mp.find(b)!=mp.end() && cnt<mp[b])) {
+            mp[b]=cnt;
+        }
+        return;
+    }
+    dfs1(cur+1, b, cnt);
+    bitset<35> nb=b;
+    nb.flip(cur);
+    for (auto nx: graph[cur]) {
+        nb.flip(nx);
+    }
+    dfs1(cur+1, nb, cnt+1);
+}
+
+void dfs2(ll cur, bitset<35> b, ll cnt) {
+    if (cur==N) {
+        bitset<35> flipped=b.flip();
+        for (ll i=N; i<35; i++) flipped[i]=0;
+
+        if (mp.find(flipped)!=mp.end()) {
+            ans=min(ans, cnt+mp[flipped]);
+        }
+        return;
+    }
+    dfs2(cur+1, b, cnt);
+    bitset<35> nb=b;
+    nb.flip(cur);
+    for (auto nx: graph[cur]) {
+        nb.flip(nx);
+    }
+    dfs2(cur+1, nb, cnt+1);
+}
 
 int main()
 {
-    //freopen("lightson.in", "r", stdin);
-    //freopen("lightson.out", "w", stdout);
-    cin >> n >> m;
-    for (int i=0; i<m; i++) cin >> light[i].x >> light[i].y >> light[i].a >> light[i].b;
-
-    q.push({1, 1});
-    visit[1][1]=1; open[1][1]=1;
-
-    while(!q.empty()) {
-        int cx=q.front().first, cy=q.front().second;
-        q.pop();
-
-        for (int i=0; i<m; i++) {
-            if (light[i].x==cx && light[i].y==cy && open[light[i].a][light[i].b]==0) {
-                open[light[i].a][light[i].b]=1;
-            }
-        }
-
-        for (int i=0; i<4; i++) {
-            int nx=cx+dx[i], ny=cy+dy[i];
-            if (nx<=0 || nx>n || ny<=0 || ny>n) continue;
-            if (visit[nx][ny]==0 && open[nx][ny]==1) {
-                q.push({nx, ny});
-                visit[nx][ny]=1;
-            }
-        }
-
-        for (int i=0; i<m; i++) {
-            if (light[i].x==cx && light[i].y==cy && open[light[i].a][light[i].b]==1) {
-                for (int j=0; j<4; j++) {
-                    int nx=light[i].a+dx[j], ny=light[i].b+dy[j];
-                    if (nx<=0 || nx>n || ny<=0 || ny>n) continue;
-                    if (visit[nx][ny]==1 && visit[light[i].a][light[i].b]==0) {
-                        q.push({light[i].a, light[i].b});
-                        visit[light[i].a][light[i].b]=1;
-                    }
-                }
-            }
-        }
+    cin >> N >> M;
+    for (ll i=1; i<=M; i++) {
+        ll a, b; cin >> a >> b;
+        a--; b--;
+        graph[a].push_back(b);
+        graph[b].push_back(a);
     }
+    n=N/2;
 
-    int ans=0;
-    for (int i=1; i<=n; i++) {
-        for (int j=1; j<=n; j++) {
-            if (open[i][j]==1) ans++;
-        }
-    }
+    bitset<35> start;
+    start.reset();
+    dfs1(0, start, 0);
+    start.reset();
+    dfs2(n, start, 0);
+
     cout << ans;
 }
