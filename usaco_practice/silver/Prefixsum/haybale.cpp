@@ -9,8 +9,7 @@ int main()
 {
     int N, K;
     cin >> N >> K;
-    for (int i=0; i<K; i++)
-    {
+    for (int i=0; i<K; i++) {
         int start, end;
         cin >> start >> end;
         hays[start]+=1;
@@ -19,10 +18,9 @@ int main()
     int sum=0;
     for (int i=1; i<=N; i++)
     {
-        sum += hays[i];
+        sum+=hays[i];
         modified[i]=sum;
     }
     sort (modified+1, modified+N+1);
     cout << modified[N/2+1];
 }
-
