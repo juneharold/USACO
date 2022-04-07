@@ -17,7 +17,7 @@ int main()
         int target;
         cin >> target;
         int lowbound=lower_bound(&numbers[0], &numbers[N], target)-&numbers[0];
-        if (numbers[lowbound]==target) cout << 1 << "\n";
+        if (lowbound<N && numbers[lowbound]==target) cout << 1 << "\n";
         else cout << 0 << "\n";
     }
 }
