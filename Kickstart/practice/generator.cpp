@@ -12,7 +12,7 @@ int main()
     ll T; cin >> T;
     for (ll t=1; t<=T; t++) {
         ll G, ans=0; cin >> G;
-        for (ll i=1; i<=1e7; i++) {
+        for (ll i=1; i*i<=2*G; i++) {
             ll temp=G*2;
             if (temp%i==0) temp/=i;
             else continue;
@@ -23,7 +23,6 @@ int main()
                 ans++;
             }
         }
-
         cout << "Case #" << t << ": " << ans << "\n";
     }
 }
