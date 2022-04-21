@@ -3,69 +3,51 @@
 #include <cstdio>
 using namespace std;
 
-pair <int, int> field[2001][2001]={}; // first is time passed, second is mowed (0, 1)
+int field[2005][2005]={};
 
 int main()
 {
-    //freopen("mowing.in", "r", stdin);
-    //freopen("mowing.out", "w", stdout);
-    int N;
-    cin >> N;
-    //start at 1000, 1000
-    int cur_x=1000, cur_y=1000;
-    int time=0;
-    int min_X=1000;
-    for (int i=0; i<N; i++)
-    {
-        char dir;
-        int steps;
-        cin >> dir >> steps;
-        for (int j=0; j<steps; j++)
-        {
-            if (field[cur_x][cur_y].second==1)
-                {
-                    int timediff=time-field[cur_x][cur_y].first;
-                    if (timediff<min_X)
-                    {
-                        min_X = timediff;
-                    }
-                }
-            if (dir=='N')
-            {
-                field[cur_x][cur_y].second = 1;
-                field[cur_x][cur_y].first = time;
-                cur_y += 1;
-                time += 1;
+    freopen("mowing.in", "r", stdin);
+    freopen("mowing.out", "w", stdout);
+    int N, x=1001, y=1001, time=2, ans=1e9; cin >> N;
+
+    field[x][y]=1;
+    for (int i=0; i<N; i++) {
+        char dir; cin >> dir;
+        int step; cin >> step;
+        if (dir=='N') {
+            for (int j=0; j<step; j++) {
+                y--;
+                if (field[x][y]!=0) ans=min(ans, time-field[x][y]);
+                field[x][y]=time;
+                time++;
             }
-            else if (dir=='E')
-            {
-                field[cur_x][cur_y].second = 1;
-                field[cur_x][cur_y].first = time;
-                cur_x += 1;
-                time += 1;
+        }
+        if (dir=='E') {
+            for (int j=0; j<step; j++) {
+                x++;
+                if (field[x][y]!=0) ans=min(ans, time-field[x][y]);
+                field[x][y]=time;
+                time++;
             }
-            else if (dir=='S')
-            {
-                field[cur_x][cur_y].second = 1;
-                field[cur_x][cur_y].first = time;
-                cur_y -= 1;
-                time += 1;
+        }
+        if (dir=='S') {
+            for (int j=0; j<step; j++) {
+                y++;
+                if (field[x][y]!=0) ans=min(ans, time-field[x][y]);
+                field[x][y]=time;
+                time++;
             }
-            else if (dir=='W')
-            {
-                field[cur_x][cur_y].second = 1;
-                field[cur_x][cur_y].first = time;
-                cur_x -= 1;
-                time += 1;
+        }
+        if (dir=='W') {
+            for (int j=0; j<step; j++) {
+                x--;
+                if (field[x][y]!=0) ans=min(ans, time-field[x][y]);
+                field[x][y]=time;
+                time++;
             }
         }
     }
-    if (min_X==1000)
-    {
-        cout << "-1" << "\n";
-    }
-    else
-    {
-        cout << min_X << "\n";
-    }
+    if (ans==1e9) cout << "-1";
+    else cout << ans;
 }
