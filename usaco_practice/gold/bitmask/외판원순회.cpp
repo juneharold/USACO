@@ -30,8 +30,8 @@ int TSP(int current, int visited){
 }
 
 int main ()
-{ios_base::sync_with_stdio(false);cout.tie(NULL);cin.tie(NULL);
-
+{
+	ios_base::sync_with_stdio(false);cout.tie(NULL);cin.tie(NULL);
     cin >> N;
     for (int i = 0; i < N; ++i){
     	for (int j = 0; j < N; ++j) cin >> W[i][j];
