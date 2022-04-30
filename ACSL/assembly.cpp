@@ -2,27 +2,24 @@
 #include <algorithm>
 using namespace std;
 
-int S=0, P=0, F, M, L, ACC;
-
-void TOP(){
-    cin >> F >> M >> L;
-    ACC=F;
-    if (ACC==0) DOWN();
-}
-
-void DOWN() {
-    ACC=M;
-    ACC*=M;
-    S=ACC;
-    ACC=L;
-    ACC*=F;
-    ACC*=4;
-    P=ACC;
-    ACC=S;
-
-}
-
 int main()
 {
+    int n, f, b, acc;
+    n=5;
+    acc=n;
+    f=acc;
+    acc-=1;
 
+    while (true) {
+        b=acc;
+        acc=f;
+        acc*=b;
+        f=acc;
+        acc=b;
+        acc-=1;
+        if (acc==0) break;
+        acc=b;
+        acc-=1;
+    }
+    cout << f;
 }
