@@ -1,61 +1,44 @@
 #include <iostream>
 #include <algorithm>
 #include <queue>
+#include <vector>
 #include <set>
 using namespace std;
 #define f first
 #define s second
 
-int dish[100005]={};
-set<pair<int, int>> s;
+int dish[100005]={}, base[100005]={};
+vector<int> stk[100005];
 priority_queue<int> pq;
 
 int main()
 {
-    freopen("dishes.in", "r", stdin);
-    freopen("dishes.out", "w", stdout);
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
     int N; cin >> N;
     for (int i=1; i<=N; i++) cin >> dish[i];
 
-    int clean_top=0, largest=0;
+    int placed=0, ans=N;
     for (int i=1; i<=N; i++) {
-        if (dish[i]<clean_top) {
-            cout << i-1;
-            exit(0);
+        int x=dish[i];
+        if (x<placed) {
+            ans=i-1;
+            break;
         }
-
-        if (s.empty()) {
-            pq.push(-dish[i]);
-            s.insert({0, dish[i]});
+        
+        for (int j=x; j>=1; j--) {
+            if (base[j]!=0) break;
+            base[j]=x;
         }
-        else if (dish[i]>largest) {
-            pq.push(-dish[i]);
-            s.insert({largest, dish[i]});
-        }
-        else {
-            auto it=s.lower_bound(make_pair(dish[i], 0));
-            it--;
-            int a=(*it).f, b=(*it).s;
-
-            if (a<dish[i] && dish[i]<b) {
-                pq.push(-dish[i]);
-                s.erase(it);
-                s.insert({a, dish[i]});
-            }
+        
+        while (!stk[base[x]].empty()) {
+            int end=stk[base[x]].back();
+            if (dish[i]<end) break;
             else {
-                while (!pq.empty() && -pq.top()<dish[i]) {
-                    if ((*s.begin()).s<-pq.top()) s.erase(s.begin());
-                    clean_top=-pq.top();
-                    pq.pop();
-                }
-                if (pq.empty()) largest=dish[i];
-                pq.push(-dish[i]);
-                s.erase(s.begin());
-                s.insert({0, dish[i]});
+                placed=end;
+                stk[base[x]].pop_back();
             }
         }
-        largest=max(largest, dish[i]);
+        stk[base[x]].push_back(x);
     }
-    cout << N;
+    cout << ans;
 }
