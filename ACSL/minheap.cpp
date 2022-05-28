@@ -1,3 +1,4 @@
+/* 문자열을 입력하면 min heap을 그려주는 툴. */
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -9,29 +10,9 @@ void Add(int cur) {
     int nx;
     if (cur%2==1) nx=(cur-1)/2;
     else nx=cur/2;
-    if (nx!=0 && heap[nx]<heap[cur]) {
+    if (nx!=0 && heap[nx]>heap[cur]) {
         swap(heap[nx], heap[cur]);
         Add(nx);
-    }
-}
-
-void Delete(int cur) {
-    int nx1=cur*2, nx2=cur*2+1;
-    if (nx2<=idx) {
-        if (heap[nx1]>heap[nx2] && heap[nx1]>heap[cur]) {
-            swap(heap[cur], heap[nx1]);
-            Delete(nx1);
-        }
-        else if (heap[nx2]>heap[cur]){
-            swap(heap[cur], heap[nx2]);
-            Delete(nx2);
-        }
-    }
-    else if (nx1<=idx && nx2>idx) {
-        if (heap[nx1]>heap[cur]) {
-            swap(heap[cur], heap[nx1]);
-            Delete(nx1);
-        }
     }
 }
 
@@ -66,3 +47,5 @@ int main()
     }
     for (int j=0; j<=idx+10; j++) cout << '-';
 }
+
+//ICECREAMSUNDAE
