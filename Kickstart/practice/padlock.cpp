@@ -1,29 +1,20 @@
 #include <iostream>
 #include <algorithm>
-#include <vector>
 using namespace std;
 #define ll long long
 
-ll N, D, dp[405][405]={}, num[405][405]={};
+ll N, D, dp[405][405][2]={}, num[405]={};
 
-ll dist(int x1, int y1, int x2, int y2) {
-    ll M=max(num[x1][y1], num[x2][y2]), m=min(num[x1][y1], num[x2][y2]);
+ll dist(int x, int y) {
+    ll M=max(num[x], num[y]), m=min(num[x], num[y]);
     return min(M-m, (m-M+D)%D);
 }
 
-ll solve(int a, int b) {
-    if (dp[a][b]!=-1) return dp[a][b];
-    
-    ll temp1=solve(a, b-1)+dist(b, b, a, b-1), temp2=solve(a+1, b)+dist(a, a, a+1, b);
-    if (temp1<temp2) {
-        dp[a][b]=temp1;
-        num[a][b]=num[b][b];
-    }
-    else {
-        dp[a][b]=temp2;
-        num[a][b]=num[a][a];
-    }
-    return dp[a][b];
+ll solve(int a, int b, int c) {
+    if (dp[a][b][c]!=-1) return dp[a][b][c];
+    dp[a][b][0]=min(solve(a+1, b, 0)+dist(a+1, a), solve(a+1, b, 1)+dist(b, a));
+    dp[a][b][1]=min(solve(a, b-1, 0)+dist(a, b), solve(a, b-1, 1)+dist(b-1, b));
+    return dp[a][b][c];
 }
 
 int main()
@@ -32,14 +23,14 @@ int main()
     int T; cin >> T;
     for (int t=1; t<=T; t++) {
         cin >> N >> D;
-        fill(&dp[0][0], &dp[N+2][N+2], -1);
+        fill(&dp[0][0][0], &dp[N+2][N+2][2], -1);
+        fill(&num[0], &num[N+2], 0);
         for (int i=1; i<=N; i++) {
-            int x; cin >> x;
-            num[i][i]=x;
-            dp[i][i]=0;
+            cin >> num[i];
+            dp[i][i][0]=0, dp[i][i][1]=0;
         }
-        cout << "Case #" << t << ": " << solve(1, N)+dist(0, 0, 1, N) << "\n";
-        fill(&num[0][0], &num[N+2][N+2], 0);
+        ll ans=min(solve(1, N, 0)+dist(1, 0), solve(1, N, 1)+dist(N, 0));
+        cout << "Case #" << t << ": " << ans << "\n";
     }
 }
 
