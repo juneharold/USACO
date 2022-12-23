@@ -2,29 +2,29 @@
 #include <algorithm>
 using namespace std;
 
-int N, dp[(1<<20)]={}, cost[21][21]={}, cnt=0;
+int N, dp[25][(1<<20)]={}, cost[25][25]={}, cnt=0;
+// dp[i][j]=i번째 사람이 j중 남은 일 하나를 처리. 
 
-void solve(int person, int cur) {
-    if (person==N) return;
-
-    for (int i=0; i<N; i++) {
-        if (cur&(1<<i)) continue;
-        int nx=(cur|(1<<i)), w=dp[cur]+cost[person][i];
-        if (w<dp[nx]) {
-            dp[nx]=w;
-            solve(person+1, nx);
+int solve(int i, int j) {
+    if (dp[i][j]!=-1) return dp[i][j];
+    dp[i][j]=1e9;
+    for (int k=0; k<N; k++) {
+        if (j&(1<<k)) {
+            int bef=j&~(1<<k);
+            dp[i][j]=min(dp[i][j], solve(i-1, bef)+cost[i][k]);
         }
     }
+    return dp[i][j];
 }
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
     cin >> N;
-    for (int i=0; i<N; i++) for (int j=0; j<N; j++) cin >> cost[i][j];
-    fill(&dp[1], &dp[(1<<20)], 1e9);
-    solve(0, 0);
-    cout << dp[(1<<N)-1];
+    for (int i=1; i<=N; i++) for (int j=0; j<N; j++) cin >> cost[i][j];
+    fill(&dp[0][0], &dp[21][(1<<20)], -1);
+    dp[0][0]=0;
+    cout << solve(N, (1<<N)-1);
 }
 
 /*
