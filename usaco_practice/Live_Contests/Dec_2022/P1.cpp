@@ -34,7 +34,7 @@ int main()
         ll ans=0;
         for (ll j=0; j<=A; j++) ans=max(ans, dp2[N][j]);
         cout << ans;
-        exit(0);
+        return 0;
     }
 
     fill(&dp[0][0][0], &dp[203][203][203], -1e9);
