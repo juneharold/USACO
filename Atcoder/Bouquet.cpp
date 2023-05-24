@@ -34,20 +34,17 @@ int main()
 {
     ll n, a, b; cin >> n >> a >> b;
     // calculating 2^n - 1
-    ll temp=1, nn=sqrt(n);
-    for (int i=1; i<=nn; i++) {
-        temp*=2;
+    ll exponent=n, ans=1, temp=2; 
+    while (exponent) {
+        if (exponent%2) {
+            ans*=temp;
+            ans%=MOD;
+        }
+        temp*=temp;
         temp%=MOD;
+        exponent/=2;
     }
-    ll ans=1;
-    for (int i=1; i<=nn; i++) {
-        ans*=temp;
-        ans%=MOD;
-    }
-    for (int i=1; i<=n-nn*nn; i++) {
-        ans*=2;
-        ans%=MOD;
-    }
+    
     ans=(ans-1+MOD)%MOD;
     ans=(ans-fermat(n, a)+MOD)%MOD;
     ans=(ans-fermat(n, b)+MOD)%MOD;
