@@ -17,23 +17,23 @@ int main()
     }
 
     vector<pair<int, int>> bounds(n+1, {0, 0});
-    stack<pair<int, int>> st;
+    stack<int> st;
     for (int i=1; i<=n; i++) {
-        while (!st.empty() && st.top().f>=a[i]) {
+        while (!st.empty() && a[st.top()]>=a[i]) {
             st.pop();
         }
         if (st.empty()) bounds[i].f=0;
-        else bounds[i].f=st.top().s;
-        st.push({a[i], i});
+        else bounds[i].f=st.top();
+        st.push(i);
     }
     while (!st.empty()) st.pop();
     for (int i=n; i>=1; i--) {
-        while (!st.empty() && st.top().f>=a[i]) {
+        while (!st.empty() && a[st.top()]>=a[i]) {
             st.pop();
         }
         if (st.empty()) bounds[i].s=n;
-        else bounds[i].s=st.top().s-1;
-        st.push({a[i], i});
+        else bounds[i].s=st.top()-1;
+        st.push(i);
     }
 
     ll ans=0, l=0, r=0;
