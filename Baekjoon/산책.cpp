@@ -26,13 +26,14 @@ int main()
     for (int i=1; i<=H; i++) for (int j=1; j<=W; j++) cin >> a[i][j];
     
     fill(&dp[0][0][0], &dp[H][W][2], -1);
+    N--;
     dp[1][1][0]=N/2, dp[1][1][1]=N/2;
     if (N%2 && a[1][1]) dp[1][1][0]++;
     if (N%2 && !a[1][1]) dp[1][1][1]++;
     for (int i=1; i<=H; i++) for (int j=1; j<=W; j++) {
         int cnt=solve(i, j, 0)+solve(i, j, 1);
-        if (cnt%2) b[i][j]=a[i][j];
-        else b[i][j]=(a[i][j]+1)%2;
+        if (cnt%2) b[i][j]=(a[i][j]+1)%2;
+        else b[i][j]=a[i][j];
     }
 
     int x=1, y=1; 
