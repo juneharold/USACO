@@ -11,9 +11,10 @@
 #include <chrono>
 #include <numeric>
 using namespace std;
+typedef long long ll;
+typedef pair<int, int> pii;
 #define f first
 #define s second
-typedef long long ll;
 const ll nmax=2e5+5, sqrmax=635, MOD=1e9+7;
 
 ll fastpow (ll x, ll y) {
