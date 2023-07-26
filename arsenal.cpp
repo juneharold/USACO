@@ -30,6 +30,22 @@ ll fastpow (ll x, ll y) {
     }
     return ret;
 }
+vector<int> isprime, primes, minfactor;
+void linear_sieve() {
+    for (int i=0; i<=2e5; i++) {
+        isprime.push_back(1);
+        minfactor.push_back(i);
+    }
+    for (int i=2; i<=2e5; i++) {
+        if (isprime[i]) primes.push_back(i);
+        for (int j: primes) {
+            if (i*j>2e5) break;
+            isprime[i*j]=0;
+            minfactor[i*j]=j;
+            if (i%j==0) break;
+        }
+    }
+}
 
 void solve() {
 
