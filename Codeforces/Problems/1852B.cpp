@@ -31,15 +31,15 @@ ll fastpow (ll x, ll y) {
     return ret;
 }
 vector<int> isprime, primes, minfactor;
-void linear_sieve(int sz) {
-    for (int i=0; i<=sz; i++) {
+void linear_sieve() {
+    for (int i=0; i<=2e5; i++) {
         isprime.push_back(1);
         minfactor.push_back(i);
     }
-    for (int i=2; i<=sz; i++) {
+    for (int i=2; i<=2e5; i++) {
         if (isprime[i]) primes.push_back(i);
         for (int j: primes) {
-            if (i*j>sz) break;
+            if (i*j>2e5) break;
             isprime[i*j]=0;
             minfactor[i*j]=j;
             if (i%j==0) break;
@@ -48,7 +48,33 @@ void linear_sieve(int sz) {
 }
 
 void solve() {
-
+    int n; cin >> n;
+    vector<pii> a(n+1);
+    for (int i=1; i<=n; i++) {
+        cin >> a[i].f;
+        a[i].s=i;
+    }
+    sort(&a[1], &a[n+1]);
+    vector<int> b(n+1);
+    int l=1, r=n, sz=n;
+    while (l<=r) {
+        if (a[r].f==n-l+1) {
+            b[a[r].s]=sz;
+            r--;
+        }
+        else if (a[l].f==n-r) {
+            b[a[l].s]=-sz;
+            l++;
+        }
+        else {
+            cout << "NO\n";
+            return;
+        }
+        sz--;
+    }
+    cout << "YES\n";
+    for (int i=1; i<=n; i++) cout << b[i] << ' ';
+    cout << "\n";
 }
 
 int main()

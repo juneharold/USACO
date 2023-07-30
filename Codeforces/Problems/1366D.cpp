@@ -47,14 +47,47 @@ void linear_sieve(int sz) {
     }
 }
 
-void solve() {
+bool prime_number(int x) {
+    for (int d: primes) {
+        if (d>1e4) break;
+        if (x%d==0) return false;
+    }
+    return true;
+}
 
+void solve() {
+    linear_sieve(1e7);
+    int n; cin >> n;
+    vector<int> ans1, ans2;
+    for (int i=0; i<n; i++) {
+        int a; cin >> a;
+        set<int> factors;
+        int temp=a;
+        while (temp>1) {
+            factors.insert(minfactor[temp]);
+            temp/=minfactor[temp];
+        }
+        if (factors.size()==1) {
+            ans1.push_back(-1);
+            ans2.push_back(-1);
+        }
+        else {
+            int prod=1;
+            for (int x: factors) prod*=x;
+            ans1.push_back(*factors.begin());
+            ans2.push_back(prod/(*factors.begin()));
+        }
+    }
+
+    for (int x: ans1) cout << x <<' ';
+    cout << "\n";
+    for (int x: ans2) cout << x <<' ';
 }
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-    int T; cin >> T;
+    int T=1; //cin >> T;
     while (T--) {
         solve();
     }
