@@ -18,15 +18,15 @@ typedef pair<int, int> pii;
 const ll nmax=2e5+5, sqrmax=635, MOD=1e9+7;
 
 ll fastpow (ll x, ll y) {
-    ll exponent=y, ret=1;
-    while (exponent) {
-        if (exponent%2) {
+    ll ret=1;
+    while (y) {
+        if (y%2) {
             ret*=x;
             ret%=MOD;
         }
         x*=x;
         x%=MOD;
-        exponent/=2;
+        y/=2;
     }
     return ret;
 }
@@ -48,7 +48,17 @@ void linear_sieve(int sz) {
 }
 
 void solve() {
-    
+    ll n, k; cin >> n >> k;
+    vector<ll> a(n+1);
+    for (int i=1; i<=n; i++) cin >> a[i];
+    ll x=1, j=0;
+    while (k--) {
+        while (j<n && a[j+1]<=x+j) {
+            j++;
+        }
+        x+=j;
+    }
+    cout << x << "\n";
 }
 
 int main()
