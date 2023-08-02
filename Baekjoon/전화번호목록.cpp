@@ -47,39 +47,52 @@ void linear_sieve(int sz) {
     }
 }
 struct Trie {
-    Trie *ch[26];
+    Trie *ch[10];
     //map<string, Trie*> ch;
     //vector<pair<char, Trie*>> ch
     bool end;
     Trie() {
         end=false;
-        for (int i=0; i<26; i++) ch[i]=NULL;
+        for (int i=0; i<10; i++) ch[i]=NULL;
     }
     ~Trie() {
-        for (int i=0; i<26; i++) if (ch[i]) delete ch[i];
+        for (int i=0; i<10; i++) if (ch[i]) delete ch[i];
     }
     void insert(const char* s) {
         if (!*s) {
             end=true;
             return;
         }
-        int now=*s-'A';
+        int now=*s-'0';
         if (!ch[now]) ch[now]=new Trie;
         ch[now]->insert(s+1);
     }
     bool find(const char* s) {
-        if (!*s) { 
-            if (end) return true;
-            return false;
-        }
-        int now=*s-'A';
+        if (!*s && end) return false;
+        if (end) return true;
+        int now=*s-'0';
         if (!ch[now]) return false;
         return ch[now]->find(s+1);
     }
 };
 
 void solve() {
-    
+    Trie *root = new Trie;
+    int n; cin >> n;
+    vector<string> v(n);
+    for (int i=0; i<n; i++) {
+        cin >> v[i];
+        root->insert(&v[i][0]);
+    }
+    for (int i=0; i<n; i++) {
+        if (root->find(&v[i][0])) {
+            cout << "NO\n";
+            delete root;
+            return;
+        }
+    }
+    cout << "YES\n";
+    delete root;
 }
 
 int main()
