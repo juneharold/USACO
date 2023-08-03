@@ -18,6 +18,8 @@ typedef pair<int, int> pii;
 #define sc second
 const ll nmax=2e5+5, sqrmax=635, MOD=1e9+7;
 
+int ans;
+
 ll fastpow (ll x, ll y) {
     ll ret=1;
     while (y) {
@@ -51,8 +53,10 @@ struct Trie {
     Trie *ch[26];
     //map<string, Trie*> ch;
     //vector<pair<char, Trie*>> ch
+    int cnt;
     bool end;
     Trie() {
+        cnt=0;
         end=false;
         for (int i=0; i<26; i++) ch[i]=NULL;
     }
@@ -65,29 +69,46 @@ struct Trie {
             return;
         }
         int now=*s-'a';
-        if (!ch[now]) ch[now]=new Trie;
+        if (!ch[now]) {
+            ch[now]=new Trie;
+            cnt++;
+        }
         ch[now]->insert(s+1);
     }
-    bool find(const char* s) {
+    void find(const char* s, int k, bool root) {
         if (!*s) { 
-            if (end) return true;
-            return false;
+            ans+=k;
+            return;
         }
         int now=*s-'a';
-        if (!ch[now]) return false;
-        return ch[now]->find(s+1);
+        if (root) ch[now]->find(s+1, k+1, false);
+        else {
+            if (cnt==1 && !end) ch[now]->find(s+1, k, false);
+            else ch[now]->find(s+1, k+1, false);
+        }
     }
 };
 
-void solve() {
-    
+void solve(int n) {
+    Trie* root=new Trie;
+    ans=0;
+    vector<string> v(n);
+    for (int i=0; i<n; i++) {
+        cin >> v[i];
+        root->insert(&v[i][0]);
+    }
+    for (int i=0; i<n; i++) {
+        root->find(&v[i][0], 0, true);
+    }
+    cout << fixed << setprecision(2) << (double)ans/n << "\n";
+    delete root;
 }
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-    int T; cin >> T;
-    while (T--) {
-        solve();
+    int n;
+    while (cin >> n) {
+        solve(n);
     }
 }
