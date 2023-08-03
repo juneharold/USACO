@@ -77,7 +77,7 @@ struct Trie {
 };
 
 void solve() {
-    Trie *root = new Trie;
+    Trie *root= new Trie;
     int n; cin >> n;
     vector<string> v(n);
     for (int i=0; i<n; i++) {
