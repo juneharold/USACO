@@ -16,7 +16,7 @@ typedef long long ll;
 typedef pair<int, int> pii;
 #define fs first
 #define sc second
-const ll nmax=2e5+5, sqrmax=635, MOD=1e9+7;
+const ll nmax=5050, sqrmax=635, MOD=998244353;
 
 ll fastpow (ll x, ll y) {
     ll ret=1;
@@ -79,14 +79,51 @@ struct Trie {
     }
 };
 
+ll fact[nmax]={}, fact_inv[nmax]={}, dp[nmax][nmax]={};
+vector<pair<ll, ll>> p;
+ll DP(ll x, ll y){
+	if(dp[x][y]!=-1) return dp[x][y];
+	if (x==p.size()) return dp[x][y]=(y==0);
+	dp[x][y]=fact_inv[p[x].second] * DP(x + 1, y) % MOD;
+	if(y>0) dp[x][y] = (dp[x][y] + fact_inv[p[x].second - 1] * DP(x + 1, y - 1)) % MOD;	
+	return dp[x][y];
+}
+
 void solve() {
-    
+    linear_sieve(1e6);
+    int n; cin >> n;
+    vector<int> a(2*n);
+    for (int i=0; i<2*n; i++) cin >> a[i];
+    sort(a.begin(), a.end());
+    vector<pair<ll, ll>> a_comp;
+    for (int i=0; i<2*n; i++){
+		if(a_comp.empty()|| a_comp.back().fs!=a[i]) a_comp.push_back({a[i], 1});
+		else a_comp.back().sc++;
+	}
+	fact[0]=1, fact_inv[0]=1;
+	for(ll i=1; i<nmax; i++) {
+        fact[i]=fact[i-1]*i%MOD;
+	    fact_inv[i]=fastpow(fact[i], MOD-2);
+    }
+
+    for(auto x: a_comp){
+		if (isprime[x.fs]) {
+			p.push_back(x);
+		}
+	}
+    fill(&dp[0][0], &dp[nmax-1][nmax], -1);
+    ll ans=DP(0, n);
+	for (auto x: a_comp){
+		if(!isprime[x.fs]) ans=ans*fact_inv[x.sc]%MOD;
+	}
+	ans=ans*fact[n]%MOD;
+	cout << ans;
 }
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-    int T; cin >> T;
+    int T=1; //cin >> T;
     while (T--) {
         solve();
     }
