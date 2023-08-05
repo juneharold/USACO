@@ -31,6 +31,14 @@ ll fastpow (ll x, ll y) {
     }
     return ret;
 }
+ll cntbits(ll x) {
+    ll ret=0;
+    while (x) {
+        if (x%2) ret++;
+        x/=2;
+    }
+    return ret;
+}
 vector<int> isprime, primes, minfactor;
 void linear_sieve(int sz) {
     for (int i=0; i<=sz; i++) {
