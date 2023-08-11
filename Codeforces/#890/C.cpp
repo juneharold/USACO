@@ -11,7 +11,6 @@
 #include <chrono>
 #include <numeric>
 #include <iomanip>
-#include <bitset>
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -89,7 +88,49 @@ struct Trie {
 };
 
 void solve() {
-    
+    ll n, k; cin >> n >> k;
+    vector<ll> a(n+1);
+    for (int i=1; i<=n; i++) cin >> a[i];
+
+    ll lo=1, hi=1e9;
+    while (lo<hi) {
+        ll mid=(lo+hi+1)/2;
+        bool possible=false;
+        for (int i=1; i<=n; i++) {
+            if (a[i]>=mid) {
+                possible=true;
+                break;
+            }
+            if (i==n) continue;
+            ll used=mid-a[i], h=mid;
+            for (int j=i+1; j<=n; j++) {
+                h--;
+                if (a[j]>=h || used>k) break;
+                if (j==n && a[j]<h) used+=1e9;
+                used+=h-a[j];
+            }
+            if (used<=k) {
+                //if (mid==7) cout << i << ' ' << used << endl;
+                possible=true;
+                break;
+            }
+        }
+        if (possible) lo=mid;
+        else hi=mid-1;
+    }
+    cout << lo << "\n";
+
+    /*
+    for (int i=1; i<=n; i++) {
+        ll used=0, h=a[i];
+        for (int j=i-1; j>=1; j--) {
+            h++;
+            if (used>k || a[j]>h) break;
+            used+=h-a[j];
+            if (used<=k) ans=max(ans, h);
+        }
+    }
+    cout << ans << "\n";*/
 }
 
 int main()

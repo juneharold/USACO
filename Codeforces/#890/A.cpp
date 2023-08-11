@@ -11,7 +11,6 @@
 #include <chrono>
 #include <numeric>
 #include <iomanip>
-#include <bitset>
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -89,7 +88,20 @@ struct Trie {
 };
 
 void solve() {
-    
+    int n; cin >> n;
+    vector<pii> a(n);
+    for (int i=0; i<n; i++) {
+        cin >> a[i].fs;
+        a[i].sc=i;
+    }
+    sort(a.begin(), a.end());
+    for (int i=n-1; i>=0; i--) {
+        if (a[i].sc!=i) {
+            cout << a[i].fs << "\n";
+            return;
+        }
+    }
+    cout << "0\n";
 }
 
 int main()

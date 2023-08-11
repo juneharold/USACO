@@ -11,13 +11,12 @@
 #include <chrono>
 #include <numeric>
 #include <iomanip>
-#include <bitset>
 using namespace std;
 typedef long long ll;
-typedef pair<int, int> pii;
+typedef pair<ll, ll> pii;
 #define fs first
 #define sc second
-const ll nmax=2e5+5, sqrmax=635, MOD=1e9+7;
+const ll nmax=5005, sqrmax=635, MOD=1e9+7;
 
 ll fastpow (ll x, ll y) {
     ll ret=1;
@@ -40,15 +39,15 @@ ll cntbits(ll x) {
     }
     return ret;
 }
-vector<int> isprime, primes, minfactor;
-void linear_sieve(int sz) {
-    for (int i=0; i<=sz; i++) {
+vector<ll> isprime, primes, minfactor;
+void linear_sieve(ll sz) {
+    for (ll i=0; i<=sz; i++) {
         isprime.push_back((i>1 ? 1:0));
         minfactor.push_back(i);
     }
-    for (int i=2; i<=sz; i++) {
+    for (ll i=2; i<=sz; i++) {
         if (isprime[i]) primes.push_back(i);
-        for (int j: primes) {
+        for (ll j: primes) {
             if (i*j>sz) break;
             isprime[i*j]=0;
             minfactor[i*j]=j;
@@ -63,17 +62,17 @@ struct Trie {
     bool end;
     Trie() {
         end=false;
-        for (int i=0; i<26; i++) ch[i]=NULL;
+        for (ll i=0; i<26; i++) ch[i]=NULL;
     }
     ~Trie() {
-        for (int i=0; i<26; i++) if (ch[i]) delete ch[i];
+        for (ll i=0; i<26; i++) if (ch[i]) delete ch[i];
     }
     void insert(const char* s) {
         if (!*s) {
             end=true;
             return;
         }
-        int now=*s-'a';
+        ll now=*s-'a';
         if (!ch[now]) ch[now]=new Trie;
         ch[now]->insert(s+1);
     }
@@ -82,20 +81,64 @@ struct Trie {
             if (end) return true;
             return false;
         }
-        int now=*s-'a';
+        ll now=*s-'a';
         if (!ch[now]) return false;
         return ch[now]->find(s+1);
     }
 };
 
+ll ans=0, dp[nmax]={};
+vector<ll> graph[nmax];
+void dfs(ll cur, ll p) {
+    dp[cur]=1;
+    ll sum=0;
+    vector<ll> w;
+    w.push_back(0);
+    for (ll nx: graph[cur]) {
+        if (nx==p) continue;
+        dfs(nx, cur);
+        dp[cur]+=dp[nx];
+        sum+=dp[nx];
+        w.push_back(dp[nx]);
+    }
+
+    vector<ll> DP[2];
+    for (ll i=0; i<2; i++) {
+        for (ll j=0; j<=sum+5; j++) DP[i].push_back(0);
+    }
+    DP[0][0]=1;
+    for (ll i=1; i<w.size(); i++) {
+        for (ll j=1; j<=sum; j++) DP[i%2][j]=0;
+        for (ll j=1; j<=sum; j++) {
+            DP[i%2][j]=DP[(i+1)%2][j];
+            if (j-w[i]>=0) DP[i%2][j]=max(DP[i%2][j], DP[(i+1)%2][j-w[i]]);
+        }
+    }
+    ll temp=0;
+    for (ll j=1; j<=sum; j++) {
+        ll i=(w.size()-1)%2;
+        if (DP[i][j]==1) {
+            temp=max(temp, j*(sum-j));
+        }
+    }
+    ans+=temp;
+}
+
 void solve() {
-    
+    ll n; cin >> n;
+    for (ll i=2; i<=n; i++) {
+        ll p; cin >> p;
+        graph[i].push_back(p);
+        graph[p].push_back(i);
+    }
+    dfs(1, 0);
+    cout << ans;
 }
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-    int T; cin >> T;
+    ll T=1; //cin >> T;
     while (T--) {
         solve();
     }

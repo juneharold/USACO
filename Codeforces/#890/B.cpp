@@ -11,7 +11,6 @@
 #include <chrono>
 #include <numeric>
 #include <iomanip>
-#include <bitset>
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -89,7 +88,19 @@ struct Trie {
 };
 
 void solve() {
-    
+    int n; cin >> n;
+    ll cnt=0, left=0;
+    for (int i=0; i<n; i++) {
+        int a; cin >> a;
+        if (a==1) cnt++;
+        else left+=a-1;
+    }
+    if (n==1) {
+        cout << "NO\n";
+        return;
+    }
+    if (left>=cnt) cout << "YES\n";
+    else cout << "NO\n";
 }
 
 int main()
