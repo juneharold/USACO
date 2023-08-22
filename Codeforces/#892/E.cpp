@@ -89,7 +89,46 @@ struct Trie {
 };
 
 void solve() {
-    
+    /*
+    dp[i][j]: maximum value of segments that end before (or at) i and has total length j.
+    dp[i][j]=max(dp[i-1][j], dp[i-l][j-l]+f(i-l+1, i));
+    Which is...
+    dp[i][j]=max(
+        dp[i-1][j],
+        a[i]-b[i]+(a[i-l]-b[i-l]+dp[i-l][j-l]),
+        a[i]+b[i]+(-a[i-l]-b[i-l]+dp[i-l][j-l]),
+        -a[i]-b[i]+(a[i-l]+b[i-l]+dp[i-l][j-l]),
+        -a[i]+b[i]+(-a[i-l]+b[i-l]+dp[i-l][j-l]),
+    )
+    where 1<=l<=j
+    now, only one l-value for a pair(i, j) is largest. so keep that in four different vectors. 
+    */
+    int n, k; cin >> n >> k;
+    vector<int> a(n+1), b(n+1);
+    for (int i=1; i<=n; i++) cin >> a[i];
+    for (int i=1; i<=n; i++) cin >> b[i];
+    vector<ll> mx1(n+2, -INF), mx2(n+2, -INF), mx3(n+2, -INF), mx4(n+2, -INF);
+    vector<vector<ll>> dp(n+1, vector<ll>(k+1, -INF));
+    dp[0][0]=0;
+    for (int i=0; i<=n; i++) {
+        for (int j=0; j<=min(i, k); j++) {
+            int diag=i-j;
+            if (i!=0) {
+                dp[i][j]=dp[i-1][j];
+                dp[i][j]=max(dp[i][j], a[i]-b[i]+mx1[diag]);
+                dp[i][j]=max(dp[i][j], a[i]+b[i]+mx2[diag]);
+                dp[i][j]=max(dp[i][j], -a[i]-b[i]+mx3[diag]);
+                dp[i][j]=max(dp[i][j], -a[i]+b[i]+mx4[diag]);
+            }
+            if (i!=n) {
+                mx1[diag]=max(mx1[diag], a[i+1]-b[i+1]+dp[i][j]);
+                mx2[diag]=max(mx2[diag], -a[i+1]-b[i+1]+dp[i][j]);
+                mx3[diag]=max(mx3[diag], +a[i+1]+b[i+1]+dp[i][j]);
+                mx4[diag]=max(mx4[diag], -a[i+1]+b[i+1]+dp[i][j]);
+            }
+        }
+    }
+    cout << dp[n][k] << "\n";
 }
 
 int main()

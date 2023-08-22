@@ -17,7 +17,7 @@ typedef long long ll;
 typedef pair<int, int> pii;
 #define fs first
 #define sc second
-const ll nmax=2e5+5, sqrmax=635, MOD=1e9+7, INF=1e18;
+const ll nmax=2e5+5, sqrmax=635, MOD=1e9+7;
 
 ll fastpow (ll x, ll y) {
     ll ret=1;
@@ -89,13 +89,36 @@ struct Trie {
 };
 
 void solve() {
-    
+    int n; cin >> n;
+    vector<int> a(n);
+    for (int i=0; i<n; i++) cin >> a[i];
+    sort(a.begin(), a.end());
+    int cnt=1;
+    for (int i=n-2; i>=0; i--) {
+        if (a[i]!=a[i+1]) break;
+        cnt++;
+    }
+    if (cnt==n) {
+        cout << "-1\n";
+        return;
+    }
+    for (int i=0; i<n-cnt; i++) {
+        if (a[i]%a[n-1]==0) {
+            cout << "-1\n";
+            return;
+        }
+    }
+    cout << n-cnt << ' ' << cnt << "\n";
+    for (int i=0; i<n-cnt; i++) cout << a[i] << ' ';
+    cout << "\n";
+    for (int i=n-cnt; i<n; i++) cout << a[i] << ' ';
+    cout << "\n";
 }
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-    int T=1; cin >> T;
+    int T; cin >> T;
     while (T--) {
         solve();
     }

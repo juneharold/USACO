@@ -14,10 +14,10 @@
 #include <bitset>
 using namespace std;
 typedef long long ll;
-typedef pair<int, int> pii;
+typedef pair<ll, ll> pii;
 #define fs first
 #define sc second
-const ll nmax=2e5+5, sqrmax=635, MOD=1e9+7, INF=1e18;
+const ll nmax=2e5+5, sqrmax=635, MOD=1e9+7;
 
 ll fastpow (ll x, ll y) {
     ll ret=1;
@@ -40,15 +40,15 @@ ll cntbits(ll x) {
     }
     return ret;
 }
-vector<int> isprime, primes, minfactor;
-void linear_sieve(int sz) {
-    for (int i=0; i<=sz; i++) {
+vector<ll> isprime, primes, minfactor;
+void linear_sieve(ll sz) {
+    for (ll i=0; i<=sz; i++) {
         isprime.push_back((i>1 ? 1:0));
         minfactor.push_back(i);
     }
-    for (int i=2; i<=sz; i++) {
+    for (ll i=2; i<=sz; i++) {
         if (isprime[i]) primes.push_back(i);
-        for (int j: primes) {
+        for (ll j: primes) {
             if (i*j>sz) break;
             isprime[i*j]=0;
             minfactor[i*j]=j;
@@ -63,17 +63,17 @@ struct Trie {
     bool end;
     Trie() {
         end=false;
-        for (int i=0; i<26; i++) ch[i]=NULL;
+        for (ll i=0; i<26; i++) ch[i]=NULL;
     }
     ~Trie() {
-        for (int i=0; i<26; i++) if (ch[i]) delete ch[i];
+        for (ll i=0; i<26; i++) if (ch[i]) delete ch[i];
     }
     void insert(const char* s) {
         if (!*s) {
             end=true;
             return;
         }
-        int now=*s-'a';
+        ll now=*s-'a';
         if (!ch[now]) ch[now]=new Trie;
         ch[now]->insert(s+1);
     }
@@ -82,20 +82,37 @@ struct Trie {
             if (end) return true;
             return false;
         }
-        int now=*s-'a';
+        ll now=*s-'a';
         if (!ch[now]) return false;
         return ch[now]->find(s+1);
     }
 };
 
 void solve() {
-    
+    ll n; cin >> n;
+    ll ans=0;
+    for (ll i=0; i<=n; i++) {
+        ll temp=0, mx=0;
+        for (ll j=1; j<=i; j++) {
+            temp+=j*j;
+            mx=max(mx, j*j);
+        }
+        ll cur=n;
+        for (ll j=i+1; j<=n; j++) {
+            //if (i==8) cout << "j*cur: "<< j << ' ' << cur << ' ' << j*cur << endl;
+            mx=max(mx, j*cur);
+            temp+=j*cur--;
+        }
+        temp-=mx;
+        ans=max(ans, temp);
+    }
+    cout << ans << "\n";
 }
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-    int T=1; cin >> T;
+    ll T; cin >> T;
     while (T--) {
         solve();
     }
