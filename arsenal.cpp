@@ -87,6 +87,18 @@ struct Trie {
         return ch[now]->find(s+1);
     }
 };
+vector<int> parent, sz;
+int Find(int x) {
+    if (parent[x]==x) return x;
+    return parent[x]=Find(parent[x]);
+}
+void Union (int a, int b) {
+    a=Find(a), b=Find(b);
+    if (a==b) return;
+    if (sz[a]>sz[b]) swap(a, b);
+    parent[a]=b;
+    sz[b]+=sz[a];
+}
 
 void solve() {
     
