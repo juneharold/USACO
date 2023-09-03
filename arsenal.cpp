@@ -56,6 +56,23 @@ void linear_sieve(int sz) {
         }
     }
 }
+int EPF(int n) {
+    vector<pair<int, int>> factors;
+    for (int j: primes) {
+        int cnt=0;
+        while (n%j==0) {
+            cnt++;
+            n/=j;
+        }
+        if (cnt!=0) factors.push_back({j, cnt});
+    }
+    if (n!=1) factors.push_back({n, 1});
+    int ret=1;
+    for (auto x: factors) {
+        ret*=fastpow(x.fs, x.sc)-fastpow(x.fs, x.sc-1);
+    }
+    return ret;
+}
 struct Trie {
     Trie *ch[26];
     //map<string, Trie*> ch;
