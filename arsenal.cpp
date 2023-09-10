@@ -116,6 +116,10 @@ void Union (int a, int b) {
     parent[a]=b;
     sz[b]+=sz[a];
 }
+int ccw(pii A, pii B, pii C) {
+    // returns AB x AC. if positive, counterclockwise
+    return (A.fs*B.sc+B.fs*C.sc+C.fs*A.sc)-(A.sc*B.fs+B.sc*C.fs+C.sc*A.fs);
+}
 
 void solve() {
     
