@@ -134,24 +134,25 @@ void solve() {
         }
         s.insert(a[i]);
     }
-    bool impossible=false;
     for (ll p: primes) {
-        vector<ll> rem(300, 0);
+        vector<ll> rem(100, 0);
         for (ll i=0; i<n; i++) rem[a[i]%p]++;
-        bool temp=true;
+        bool impossible=true;
         for (ll i=0; i<p; i++) {
-            if (rem[i]<2) temp=false;
+            if (rem[i]<2) impossible=false;
         }
-        if (temp) impossible=true;
+        if (impossible) {
+            cout << "NO\n";
+            return;
+        }
     }
-    if (impossible) cout << "NO\n";
-    else cout << "YES\n";
+    cout << "YES\n";
 }
 
 int main()
 {
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-    linear_sieve(300);
+    linear_sieve(100);
     ll T=1; cin >> T;
     while (T--) {
         solve();
