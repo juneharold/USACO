@@ -104,52 +104,69 @@ struct Trie {
         return ch[now]->find(s+1);
     }
 };
-int leader[nmax], sz[nmax];
+vector<int> parent, sz;
 int Find(int x) {
-    if (leader[x]==x) return x;
-    return leader[x]=Find(leader[x]);
+    if (parent[x]==x) return x;
+    return parent[x]=Find(parent[x]);
 }
 void Union (int a, int b) {
     a=Find(a), b=Find(b);
     if (a==b) return;
     if (sz[a]>sz[b]) swap(a, b);
-    leader[a]=b;
+    parent[a]=b;
     sz[b]+=sz[a];
 }
 int ccw(pii A, pii B, pii C) {
     // returns AB x AC. if positive, counterclockwise
     return (A.fs*B.sc+B.fs*C.sc+C.fs*A.sc)-(A.sc*B.fs+B.sc*C.fs+C.sc*A.fs);
 }
-int parent[nmax][20], depth[nmax];
-int lca(int a, int b) {
-    if (depth[a]<depth[b]) swap(a, b);
-    for (int i=19; i>=0; i--) {
-        if (depth[a]-depth[b]>(1<<i)) a=parent[a][i];
+
+// Cannot name variables: nmax, sqrmax, MOD, INF, isprime, primes, minfactor, parent, sz
+int n, m, k; 
+int calc(vector<vector<char>> &a) {
+    vector<vector<int>> diag(n+5, vector<int>(m+5, 0)), col(n+5, vector<int>(m+5, 0));
+    for (int i=n; i>=1; i--) {
+        for (int j=1; j<=m; j++) {
+            if (a[i][j]=='#') diag[i][j]=diag[i+1][j-1]+1;
+            else diag[i][j]=diag[i+1][j-1];
+        }
     }
-    if (a==b) return a;
-    for (int i=0; i<=19; i++) {
-        if (parent[a][i]!=parent[b][i]) a=parent[a][i], b=parent[b][i];
+    for (int i=1; i<=n; i++) {
+        for (int j=1; j<=m; j++) {
+            if (a[i][j]=='#') col[i][j]=col[i-1][j]+1;
+            else col[i][j]=col[i-1][j];
+        }
     }
-    return parent[a][0];
-}
-int segtree[4*nmax]={};
-int query(int n, int a, int b, int qa, int qb) {
-	if (b<qa || qb<a) return 0;
-	if (qa<=a && b<=qb) return segtree[n];
-	int mid=(a+b)/2;
-	return query(2*n, a, mid, qa, qb)+query(2*n+1, mid+1, b, qa, qb);
-}
-void update(int n, int a, int b, int qa, int qb, int v) {
-    if (b<qa || qb<a) return;
-	if (qa<=a && b<=qb) { segtree[n]=v; return; }
-	int mid=(a+b)/2;
-	update(2*n, a, mid, qa, qb, v);
-	update(2*n+1, mid+1, b, qa, qb, v);
-	segtree[n]=segtree[2*n]+segtree[2*n+1];
+
+    int ret=0;
+    for (int i=1; i<=n; i++) {
+        int cur=0;
+        for (int j=1; j<=m; j++) {
+            cur+=col[i][j]-col[max(0, i-k-1)][j];
+            int diff=max(0, 1-(i-k));
+            cur-=diag[max(1, i-k)][max(0, j-1-diff)]-diag[i+1][max(0, j-2-k)];
+            ret=max(ret, cur);
+        }
+    }
+    return ret;
 }
 
 void solve() {
-    
+    cin >> n >> m >> k;
+    vector<vector<char>> grid(n+1, vector<char>(m+1, '.')), a(n+1, vector<char>(m+1, '.'));
+    for (int i=1; i<=n; i++) for (int j=1; j<=m; j++) {
+        cin >> grid[i][j];
+        a[i][j]=grid[i][j];
+    }
+
+    int ans=calc(a);
+    for (int i=1; i<=n; i++) for (int j=1; j<=m; j++) a[i][j]=grid[n+1-i][j];
+    ans=max(ans, calc(a));
+    for (int i=1; i<=n; i++) for (int j=1; j<=m; j++) a[i][j]=grid[i][m+1-j];
+    ans=max(ans, calc(a));
+    for (int i=1; i<=n; i++) for (int j=1; j<=m; j++) a[i][j]=grid[n+1-i][m+1-j];
+    ans=max(ans, calc(a));
+    cout << ans << "\n";
 }
 
 int main()
