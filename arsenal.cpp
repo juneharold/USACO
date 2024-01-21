@@ -148,6 +148,61 @@ void update(int n, int a, int b, int qa, int qb, int v) {
 	segtree[n]=segtree[2*n]+segtree[2*n+1];
 }
 
+
+vector<int> graph[nmax];
+int sz[nmax]={};
+void dfs(int cur, int p) {
+    sz[cur]=1;
+    for (int nx: graph[cur]) {
+        if (nx==p) continue;
+        depth[nx]=depth[cur]+1;
+        parent[nx][0]=cur;
+        dfs(nx, cur);
+        sz[cur]+=sz[nx];
+    }
+}
+
+int group[nmax], head[nmax], order[nmax], piv1, piv2;
+void hld(int cur, int p) {
+    sort(graph[cur].begin(), graph[cur].end(), [](int &a, int &b){return sz[a]>sz[b];});
+    int heavy=-1;
+    for (int nx: graph[cur]) {
+        if (nx==p) continue;
+        heavy=nx;
+        group[nx]=group[cur];
+        order[nx]=++piv2;
+        hld(nx, cur);
+        break;
+    }
+    for (int nx: graph[cur]) {
+        if (nx==p || nx==heavy) continue;
+        group[nx]=++piv1;
+        head[group[nx]]=nx;
+        order[nx]=++piv2;
+        hld(nx, cur);
+    }
+}
+
+int tree_query(int a, int b) {
+    int ret=0;
+    while (group[a]!=group[b]) {
+        if (a==1 && b==0) break;
+        int aa=head[group[a]], bb=head[group[b]];
+        if (depth[a]>depth[b]) {
+            ret+=query(1, 1, N, order[aa], order[a]);
+            a=parent[aa][0];
+        }
+        else {
+            ret+=query(1, 1, N, order[bb], order[b]);
+            b=parent[bb][0];
+        }
+    }
+    if (depth[a]>depth[b]) swap(a, b);
+    ret+=query(1, 1, N, order[a], order[b]);
+    return ret;
+}
+
+
 void solve() {
     
 }
