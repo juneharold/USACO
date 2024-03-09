@@ -162,7 +162,7 @@ void dfs(int cur, int p) {
     }
 }
 
-int group[nmax], head[nmax], order[nmax], piv1, piv2;
+int N, group[nmax], head[nmax], order[nmax], piv1, piv2;
 void hld(int cur, int p) {
     sort(graph[cur].begin(), graph[cur].end(), [](int &a, int &b){return sz[a]>sz[b];});
     int heavy=-1;
@@ -202,6 +202,29 @@ int tree_query(int a, int b) {
     return ret;
 }
 
+ll fact[nmax]={}, invfact[nmax]={};
+ll nCr(ll n, ll r) {
+    return fact[n]*invfact[n-r]%MOD*invfact[r]%MOD;
+}
+
+pair<ll, pii> euclid(ll a, ll b) {
+    if (a<b) swap(a, b);
+    if (b==0) return {a, {1, 0}};
+    auto res=euclid(b, a%b);
+    ll g=res.fs, x1=res.sc.fs, y1=res.sc.sc;
+    return {g, {y1, x1-y1*(a/b)}};
+}
+
+bool diophantine(ll a, ll b, ll c) { // find if solution exists for ax+by=c
+    auto res=euclid(abs(a), abs(b));
+    ll g=res.fs, x=res.sc.fs, y=res.sc.sc;
+    if (c%g) return false;
+    x*=c/g;
+    y*=c/g;
+    if (a<0) x=-x;
+    if (b<0) y=-y;
+    return true;
+}
 
 void solve() {
     
