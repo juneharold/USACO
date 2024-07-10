@@ -132,21 +132,36 @@ int lca(int a, int b) {
     }
     return parent[a][0];
 }
-int segtree[4*nmax]={};
+int segtree[4*nmax]={}, lazy[4*nmax]={};
+void propagate(int n, int a, int b) {
+    segtree[n]+=(b-a+1)*lazy[n];
+    if (a!=b) {
+        lazy[2*n]+=lazy[n];
+        lazy[2*n+1]+=lazy[n];
+    }
+    lazy[n]=0;
+}
 int query(int n, int a, int b, int qa, int qb) {
-	if (b<qa || qb<a) return 0;
-	if (qa<=a && b<=qb) return segtree[n];
-	int mid=(a+b)/2;
-	return query(2*n, a, mid, qa, qb)+query(2*n+1, mid+1, b, qa, qb);
+    propagate(n, a, b);
+    if (b<qa || qb<a) return 0;
+    if (qa<=a && b<=qb) return segtree[n];
+    int mid=(a+b)/2;
+    return query(2*n, a, mid, qa, qb)+query(2*n+1, mid+1, b, qa, qb);
 }
 void update(int n, int a, int b, int qa, int qb, int v) {
+    propagate(n, a, b);
     if (b<qa || qb<a) return;
-	if (qa<=a && b<=qb) { segtree[n]=v; return; }
-	int mid=(a+b)/2;
-	update(2*n, a, mid, qa, qb, v);
-	update(2*n+1, mid+1, b, qa, qb, v);
-	segtree[n]=segtree[2*n]+segtree[2*n+1];
+    if (qa<=a && b<=qb) { 
+        lazy[n]+=v;
+        propagate(n, a, b);
+        return; 
+    }
+    int mid=(a+b)/2;
+    update(2*n, a, mid, qa, qb, v);
+    update(2*n+1, mid+1, b, qa, qb, v);
+    segtree[n]=segtree[2*n]+segtree[2*n+1];
 }
+
 
 
 vector<int> graph[nmax];
@@ -162,7 +177,7 @@ void dfs(int cur, int p) {
     }
 }
 
-int N, group[nmax], head[nmax], order[nmax], piv1, piv2;
+int group[nmax], head[nmax], order[nmax], piv1=0, piv2=0;
 void hld(int cur, int p) {
     sort(graph[cur].begin(), graph[cur].end(), [](int &a, int &b){return sz[a]>sz[b];});
     int heavy=-1;
@@ -201,6 +216,24 @@ int tree_query(int a, int b) {
     ret+=query(1, 1, N, order[a], order[b]);
     return ret;
 }
+
+void tree_update(int a, int b, int v) {
+    while (group[a]!=group[b]) {
+        if (a==1 && b==0) break;
+        int aa=head[group[a]], bb=head[group[b]];
+        if (depth[a]>depth[b]) {
+            update(1, 1, N, order[aa], order[a], v);
+            a=parent[aa][0];
+        }
+        else {
+            update(1, 1, N, order[bb], order[b], v);
+            b=parent[bb][0];
+        }
+    }
+    if (depth[a]>depth[b]) swap(a, b);
+    update(1, 1, N, order[a], order[b], v);
+}
+
 
 ll fact[nmax]={}, invfact[nmax]={};
 ll nCr(ll n, ll r) {
