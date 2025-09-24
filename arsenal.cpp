@@ -259,6 +259,65 @@ bool diophantine(ll a, ll b, ll c) { // find if solution exists for ax+by=c
     return true;
 }
 
+struct Node {
+    int val;
+    Node* next[2];
+    Node(int v=0, Node* left=nullptr, Node* right=nullptr) {
+        val=v;
+        next[0]=left;
+        next[1]=right;
+    }
+};
+
+struct PST {
+    int n;
+    vector<Node*> roots;
+    PST(int n, vector<int> a={}) {
+        this->n=n;
+        if (a.empty()) a.resize(n + 1, 0);
+        roots.push_back(build(a, 1, n));
+    }
+
+    // returns a pointer to a the next node
+    Node* build(vector<int>& a, int l, int r) {
+        if (l==r) return new Node(a[l]);
+        int mid=(l+r)/2;
+        Node* cur=new Node();
+        cur->next[0]=build(a, l, mid);
+        cur->next[1]=build(a, mid+1, r);
+        cur->val=cur->next[0]->val+cur->next[1]->val;
+        return cur;
+    }
+
+    // change element in i to v, and create new tree branch. 
+    Node* make_branch(Node* prev, int l, int r, int i, int v) { 
+        //cout << l << ' ' << r << endl;
+        if (i<l || i>r) return prev;
+        if (l==i && i==r) return new Node(v);
+        int mid=(l+r)/2;
+        Node* cur=new Node();
+        cur->next[0]=make_branch(prev->next[0], l, mid, i, v);
+        cur->next[1]=make_branch(prev->next[1], mid+1, r, i, v);
+        cur->val=cur->next[0]->val+cur->next[1]->val;
+        return cur;
+    }
+
+    // create new branch in PST. 
+    void update(int i, int v) {
+        Node* prev=roots.back();
+        Node* newRoot=make_branch(prev, 1, n, i, v);
+        roots.push_back(newRoot);
+    }
+
+    // get sum from qa to qb
+    int query(Node* cur, int l, int r, int qa, int qb) {
+        if (r<qa || qb<l) return 0;
+        if (qa<=l && r<=qb) return cur->val;
+        int mid=(l+r)/2;
+        return query(cur->next[0], l, mid, qa, qb)+query(cur->next[1], mid+1, r, qa, qb);
+    }
+};
+
 void solve() {
     
 }
